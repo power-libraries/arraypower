@@ -1,0 +1,248 @@
+package com.github.powerlibraries.array;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
+import java.util.RandomAccess;
+{% if not(t.primitive) %}
+import java.util.Comparator;
+{% endif %}
+import com.github.powerlibraries.primitive.collections.Abstract{{t.label}}List;
+import com.github.powerlibraries.primitive.collections.{{t.label}}Collection;
+import com.github.powerlibraries.primitive.common.{{t.label}}Pointer;
+
+public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}List{{t.generic}} implements {{t.label}}Array{{t.generic}} {
+
+	private final {{t.arrayType}}[] elementData;
+	private final int offset;
+	private final int length;
+
+	Default{{t.label}}Array({{t.arrayType}}[] elementData) {
+		this(elementData, 0, elementData.length);
+	}
+	
+	Default{{t.label}}Array({{t.arrayType}}[] elementData, int offset, int length) {
+		this.elementData = elementData;
+		this.offset = offset;
+		this.length = length;
+	}
+
+	/**
+     * Checks if the given index is in range.  If not, throws an appropriate
+     * runtime exception.
+     */
+    private void rangeCheck(int index) {
+        if (index >= length || index < 0)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+    
+    /**
+     * Constructs an IndexOutOfBoundsException detail message.
+     * Of the many possible refactorings of the error handling code,
+     * this "outlining" performs best with both server and client VMs.
+     */
+    private String outOfBoundsMsg(int index) {
+        return "Index: "+index+", Size: "+elementData.length;
+    }
+
+	@Override
+	public {{t.type}} get{{t.label}}(int index) {
+		rangeCheck(index);
+		return {{ (t.type==t.arrayType) ? '' : '('~t.type~') ' }}elementData[offset+index];
+	}
+
+	@Override
+	public {{t.type}} set{{t.label}}(int index, {{t.type}} element) {
+		rangeCheck(index);
+		{{t.type}} old = {{ (t.type==t.arrayType) ? '' : '('~t.type~') ' }}elementData[offset+index];
+		elementData[offset+index] = element;
+		return old;
+	}
+
+	@Override
+	public void add{{t.label}}(int index, {{t.type}} element) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int indexOf{{t.label}}({{t.type}} o) {
+		for(int i=offset; i<offset+length; i++) {
+			if({{t.equal('elementData[i]','o')}}) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public int lastIndexOf{{t.label}}({{t.type}} o) {
+		for(int i=offset+length; i>=offset; i--) {
+			if({{t.equal('elementData[i]','o')}}) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public int size() {
+		return length;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return size() == 0;
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		for(Object o:c) {
+			if(!this.contains(o))
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		boolean changed = false;
+		for(Object o:c)
+			changed |= this.remove(o);
+		return changed;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		boolean changed = false;
+		for(int i=offset; i<offset+length; i++) {
+			if(!c.contains(elementData[i])) {
+				elementData[i] = {{t.neutralElement}};
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	@Override
+	public void clear() {
+		fill({{t.neutralElement}});
+	}
+	
+	@Override
+	public void fill({{t.type}} value) {
+		for(int i=offset; i<offset+length; i++) {
+			elementData[i] = {{t.neutralElement}};
+		}
+	}
+	
+	@Override
+	public Object[] toArray() {
+		Object[] result = new Object[length];
+		for(int i=0;i<length;i++)
+			result[i] = elementData[i+offset];
+		return result;
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		if(a.length != length)
+			a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), length);
+		for(int i=0;i<length;i++)
+			a[i] = (T)(Object)elementData[i+offset];
+		return a;
+	}
+	{% if t.numeric %}
+	@Override
+	public void sort() {
+		Arrays.sort(elementData, offset, offset+length);
+	}
+	
+	@Override
+	public void parallelSort() {
+		Arrays.parallelSort(elementData, offset, offset+length);
+	}
+	
+	@Override
+	public int binarySearch({{t.type}} key) {
+		return Arrays.binarySearch(elementData, offset, offset+length, key);
+	}
+	{% elseif not (t.primitive) %}
+	@Override
+	public int binarySearch({{t.type}} key, Comparator<{{t.boxed}}> comp) {
+		return Arrays.binarySearch(elementData, offset, offset+length, key);
+	}
+	{% endif %}
+	@Override
+	public boolean contains{{t.label}}({{t.type}} o) {
+		for(int i=offset+length; i>=offset; i--) {
+			if({{t.equal('elementData[i]','o')}}) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public {{t.boxed}} remove(int index) {
+		rangeCheck(index);
+		{{t.type}} old = {{ (t.type==t.arrayType) ? '' : '('~t.type~') ' }}elementData[offset+index];
+		elementData[offset+index] = {{t.neutralElement}};
+		return old;
+	}
+
+	@Override
+	public ListIterator<{{t.boxed}}> listIterator(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public {{t.arrayType}}[] to{{t.label}}Array() {
+		{{t.arrayType}}[] result = new {{t.arrayType}}[length];
+		for(int i=0;i<length;i++)
+			result[i] = elementData[i+offset];
+		return result;
+	}
+
+	@Override
+	public boolean remove{{t.label}}({{t.type}} o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean containsAll{{t.label}}s({{t.label}}Collection{{t.extendedGeneric}} c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeAll{{t.label}}s({{t.label}}Collection{{t.extendedGeneric}} c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean retainAll{{t.label}}s({{t.label}}Collection{{t.extendedGeneric}} c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterable<{{t.label}}Pointer{{t.generic}}> primitiveIterable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
