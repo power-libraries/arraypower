@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.CharCollection;
 import com.github.powerlibraries.primitive.collections.CharList;
 
-public interface CharArray extends CharList, RandomAccess {
+public interface CharArray extends CharList, Array<Character>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static CharArray EMPTY = new DefaultCharArray(new char[0]);
@@ -110,12 +111,12 @@ public interface CharArray extends CharList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addChar(char e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllChars(CharCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface CharArray extends CharList, RandomAccess {
 	public int binarySearch(char key);
 	
 	public void fill(char val);
+	
+	public char[] getInternalArray();
+	
+	public int getInternalOffset();
 }

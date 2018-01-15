@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.ShortCollection;
 import com.github.powerlibraries.primitive.collections.ShortList;
 
-public interface ShortArray extends ShortList, RandomAccess {
+public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static ShortArray EMPTY = new DefaultShortArray(new short[0]);
@@ -110,12 +111,12 @@ public interface ShortArray extends ShortList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addShort(short e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllShorts(ShortCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface ShortArray extends ShortList, RandomAccess {
 	public int binarySearch(short key);
 	
 	public void fill(short val);
+	
+	public short[] getInternalArray();
+	
+	public int getInternalOffset();
 }

@@ -35,7 +35,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -92,15 +92,6 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -196,46 +187,41 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	}
 
 	@Override
-	public ListIterator<Byte> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public byte[] toByteArray() {
 		byte[] result = new byte[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public byte[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeByte(byte o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = 0;
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Byte> listIterator(int index) {
+		return new ArrayIterator<Byte>(this, index);
 	}
 
 	@Override
-	public boolean containsAllBytes(ByteCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllBytes(ByteCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllBytes(ByteCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<BytePointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<BytePointer> primitiveIterable(int index) {
+		return new BytePrimitiveIterable(this, index);
 	}
 }

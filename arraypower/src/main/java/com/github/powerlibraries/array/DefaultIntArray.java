@@ -35,7 +35,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -92,15 +92,6 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -196,46 +187,41 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 
 	@Override
-	public ListIterator<Integer> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int[] toIntArray() {
 		int[] result = new int[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public int[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeInt(int o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = 0;
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Integer> listIterator(int index) {
+		return new ArrayIterator<Integer>(this, index);
 	}
 
 	@Override
-	public boolean containsAllInts(IntCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllInts(IntCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllInts(IntCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<IntPointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<IntPointer> primitiveIterable(int index) {
+		return new IntPrimitiveIterable(this, index);
 	}
 }

@@ -35,7 +35,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -95,15 +95,6 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
-	}
-
-	@Override
 	public boolean addAll(Collection<? extends Short> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
@@ -126,7 +117,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 		boolean changed = false;
 		for(int i=offset; i<offset+length; i++) {
 			if(!c.contains(elementData[i])) {
-				elementData[i] = 0;
+				elementData[i] = ((short)0);
 				changed = true;
 			}
 		}
@@ -135,13 +126,13 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 
 	@Override
 	public void clear() {
-		fill(0);
+		fill(((short)0));
 	}
 	
 	@Override
 	public void fill(short value) {
 		for(int i=offset; i<offset+length; i++) {
-			elementData[i] = 0;
+			elementData[i] = ((short)0);
 		}
 	}
 	
@@ -191,14 +182,8 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	public Short remove(int index) {
 		rangeCheck(index);
 		short old = elementData[offset+index];
-		elementData[offset+index] = 0;
+		elementData[offset+index] = ((short)0);
 		return old;
-	}
-
-	@Override
-	public ListIterator<Short> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -208,34 +193,35 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public short[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeShort(short o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = ((short)0);
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Short> listIterator(int index) {
+		return new ArrayIterator<Short>(this, index);
 	}
 
 	@Override
-	public boolean containsAllShorts(ShortCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllShorts(ShortCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllShorts(ShortCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<ShortPointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<ShortPointer> primitiveIterable(int index) {
+		return new ShortPrimitiveIterable(this, index);
 	}
 }

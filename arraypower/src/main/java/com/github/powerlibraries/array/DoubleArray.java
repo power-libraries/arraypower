@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.DoubleCollection;
 import com.github.powerlibraries.primitive.collections.DoubleList;
 
-public interface DoubleArray extends DoubleList, RandomAccess {
+public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static DoubleArray EMPTY = new DefaultDoubleArray(new double[0]);
@@ -110,12 +111,12 @@ public interface DoubleArray extends DoubleList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addDouble(double e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllDoubles(DoubleCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface DoubleArray extends DoubleList, RandomAccess {
 	public int binarySearch(double key);
 	
 	public void fill(double val);
+	
+	public double[] getInternalArray();
+	
+	public int getInternalOffset();
 }

@@ -10,9 +10,10 @@ import java.util.RandomAccess;
 import java.util.Comparator;
 {% endif %}
 
+import com.github.powerlibraries.primitive.collections.{{t.label}}Collection;
 import com.github.powerlibraries.primitive.collections.{{t.label}}List;
 
-public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generic}}, RandomAccess {
+public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generic}}, Array<{{t.boxed}}>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static {{t.label}}Array EMPTY = new Default{{t.label}}Array(new {{t.arrayType}}[0]);
@@ -112,12 +113,12 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean add{{t.label}}({{t.type}} e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAll{{t.label}}s({{t.label}}Collection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

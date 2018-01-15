@@ -9,9 +9,10 @@ import java.util.RandomAccess;
 import java.util.Comparator;
 
 
+import com.github.powerlibraries.primitive.collections.ObjectCollection;
 import com.github.powerlibraries.primitive.collections.ObjectList;
 
-public interface ObjectArray<E> extends ObjectList<E>, RandomAccess {
+public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static ObjectArray EMPTY = new DefaultObjectArray(new Object[0]);
@@ -103,12 +104,12 @@ public interface ObjectArray<E> extends ObjectList<E>, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addObject(E e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllObjects(ObjectCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -124,4 +125,8 @@ public interface ObjectArray<E> extends ObjectList<E>, RandomAccess {
 	public int binarySearch(E key, Comparator<E> comp);
 	
 	public void fill(E val);
+	
+	public Object[] getInternalArray();
+	
+	public int getInternalOffset();
 }

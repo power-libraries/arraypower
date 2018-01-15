@@ -35,7 +35,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -92,15 +92,6 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -196,46 +187,41 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 
 	@Override
-	public ListIterator<Float> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public float[] toFloatArray() {
 		float[] result = new float[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public float[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeFloat(float o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = 0f;
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Float> listIterator(int index) {
+		return new ArrayIterator<Float>(this, index);
 	}
 
 	@Override
-	public boolean containsAllFloats(FloatCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllFloats(FloatCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllFloats(FloatCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<FloatPointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<FloatPointer> primitiveIterable(int index) {
+		return new FloatPrimitiveIterable(this, index);
 	}
 }

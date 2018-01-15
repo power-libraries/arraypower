@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.IntCollection;
 import com.github.powerlibraries.primitive.collections.IntList;
 
-public interface IntArray extends IntList, RandomAccess {
+public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static IntArray EMPTY = new DefaultIntArray(new int[0]);
@@ -110,12 +111,12 @@ public interface IntArray extends IntList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addInt(int e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllInts(IntCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface IntArray extends IntList, RandomAccess {
 	public int binarySearch(int key);
 	
 	public void fill(int val);
+	
+	public int[] getInternalArray();
+	
+	public int getInternalOffset();
 }

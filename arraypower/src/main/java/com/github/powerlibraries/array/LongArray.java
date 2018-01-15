@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.LongCollection;
 import com.github.powerlibraries.primitive.collections.LongList;
 
-public interface LongArray extends LongList, RandomAccess {
+public interface LongArray extends LongList, Array<Long>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static LongArray EMPTY = new DefaultLongArray(new long[0]);
@@ -110,12 +111,12 @@ public interface LongArray extends LongList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addLong(long e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllLongs(LongCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface LongArray extends LongList, RandomAccess {
 	public int binarySearch(long key);
 	
 	public void fill(long val);
+	
+	public long[] getInternalArray();
+	
+	public int getInternalOffset();
 }

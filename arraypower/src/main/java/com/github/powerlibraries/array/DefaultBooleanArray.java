@@ -35,7 +35,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -92,15 +92,6 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -181,46 +172,41 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 
 	@Override
-	public ListIterator<Boolean> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean[] toBooleanArray() {
 		boolean[] result = new boolean[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public boolean[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeBoolean(boolean o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = false;
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Boolean> listIterator(int index) {
+		return new ArrayIterator<Boolean>(this, index);
 	}
 
 	@Override
-	public boolean containsAllBooleans(BooleanCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllBooleans(BooleanCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllBooleans(BooleanCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<BooleanPointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<BooleanPointer> primitiveIterable(int index) {
+		return new BooleanPrimitiveIterable(this, index);
 	}
 }

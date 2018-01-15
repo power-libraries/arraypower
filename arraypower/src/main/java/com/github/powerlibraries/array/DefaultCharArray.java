@@ -35,7 +35,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -92,15 +92,6 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -196,46 +187,41 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 
 	@Override
-	public ListIterator<Character> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public char[] toCharArray() {
 		char[] result = new char[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public char[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeChar(char o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = '\u0000';
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Character> listIterator(int index) {
+		return new ArrayIterator<Character>(this, index);
 	}
 
 	@Override
-	public boolean containsAllChars(CharCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllChars(CharCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllChars(CharCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<CharPointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<CharPointer> primitiveIterable(int index) {
+		return new CharPrimitiveIterable(this, index);
 	}
 }

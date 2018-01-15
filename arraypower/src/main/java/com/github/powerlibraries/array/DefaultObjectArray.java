@@ -37,7 +37,7 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -94,15 +94,6 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -188,46 +179,41 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	}
 
 	@Override
-	public ListIterator<E> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Object[] toObjectArray() {
 		Object[] result = new Object[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public Object[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeObject(E o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(Objects.equals(elementData[i], o)) {
+				elementData[i] = null;
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<E> listIterator(int index) {
+		return new ArrayIterator<E>(this, index);
 	}
 
 	@Override
-	public boolean containsAllObjects(ObjectCollection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllObjects(ObjectCollection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllObjects(ObjectCollection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<ObjectPointer<E>> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<ObjectPointer> primitiveIterable(int index) {
+		return new ObjectPrimitiveIterable(this, index);
 	}
 }

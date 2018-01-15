@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.FloatCollection;
 import com.github.powerlibraries.primitive.collections.FloatList;
 
-public interface FloatArray extends FloatList, RandomAccess {
+public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static FloatArray EMPTY = new DefaultFloatArray(new float[0]);
@@ -110,12 +111,12 @@ public interface FloatArray extends FloatList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addFloat(float e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllFloats(FloatCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface FloatArray extends FloatList, RandomAccess {
 	public int binarySearch(float key);
 	
 	public void fill(float val);
+	
+	public float[] getInternalArray();
+	
+	public int getInternalOffset();
 }

@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.BooleanCollection;
 import com.github.powerlibraries.primitive.collections.BooleanList;
 
-public interface BooleanArray extends BooleanList, RandomAccess {
+public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static BooleanArray EMPTY = new DefaultBooleanArray(new boolean[0]);
@@ -129,4 +130,8 @@ public interface BooleanArray extends BooleanList, RandomAccess {
 	}
 	
 	public void fill(boolean val);
+	
+	public boolean[] getInternalArray();
+	
+	public int getInternalOffset();
 }

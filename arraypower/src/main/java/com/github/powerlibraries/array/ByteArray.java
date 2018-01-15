@@ -8,9 +8,10 @@ import java.util.RandomAccess;
 
 
 
+import com.github.powerlibraries.primitive.collections.ByteCollection;
 import com.github.powerlibraries.primitive.collections.ByteList;
 
-public interface ByteArray extends ByteList, RandomAccess {
+public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
 	public final static ByteArray EMPTY = new DefaultByteArray(new byte[0]);
@@ -110,12 +111,12 @@ public interface ByteArray extends ByteList, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addBoolean(boolean e) throws UnsupportedOperationException {
+	public default boolean addByte(byte e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+	public default boolean addAllBytes(ByteCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -132,4 +133,8 @@ public interface ByteArray extends ByteList, RandomAccess {
 	public int binarySearch(byte key);
 	
 	public void fill(byte val);
+	
+	public byte[] getInternalArray();
+	
+	public int getInternalOffset();
 }

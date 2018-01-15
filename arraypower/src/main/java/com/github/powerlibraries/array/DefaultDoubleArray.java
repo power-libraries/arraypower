@@ -35,7 +35,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
         if (index >= length || index < 0)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
-    
+
     /**
      * Constructs an IndexOutOfBoundsException detail message.
      * Of the many possible refactorings of the error handling code,
@@ -92,15 +92,6 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		for(Object o:c) {
-			if(!this.contains(o))
-				return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -196,46 +187,41 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 
 	@Override
-	public ListIterator<Double> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public double[] toDoubleArray() {
 		double[] result = new double[length];
 		for(int i=0;i<length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
-
+	
+	@Override
+	public double[] getInternalArray() {
+		return elementData;
+	}
+	
+	@Override
+	public int getInternalOffset() {
+		return offset;
+	}
+	
 	@Override
 	public boolean removeDouble(double o) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<length;i++) {
+			if(elementData[i] == o) {
+				elementData[i] = 0d;
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	@Override
+	public ListIterator<Double> listIterator(int index) {
+		return new ArrayIterator<Double>(this, index);
 	}
 
 	@Override
-	public boolean containsAllDoubles(DoubleCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAllDoubles(DoubleCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAllDoubles(DoubleCollection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<DoublePointer> primitiveIterable() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterable<DoublePointer> primitiveIterable(int index) {
+		return new DoublePrimitiveIterable(this, index);
 	}
 }
