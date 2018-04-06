@@ -1,0 +1,16 @@
+language: java
+jdk:
+  - oraclejdk8
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+script: 
+  - cd arraypower-generator
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
+  - mvn test -Dmaven.javadoc.skip=true -B
+  - mvn exec:java -DskipTests=true -Dmaven.javadoc.skip=true -Dexec.args="../tmp/"
+  - cd ..
+  - diff -qrN tmp/ arraypower/
+  - cd arraypower
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
+  - mvn test -Dmaven.javadoc.skip=true -B
