@@ -1,4 +1,4 @@
-package com.github.powerlibraries.trie.generator;
+package com.github.powerlibraries.array.generator;
 
 import java.io.File;
 import java.io.FileOutputStream;
