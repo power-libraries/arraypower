@@ -6,7 +6,9 @@ cache:
     - '$HOME/.m2/repository'
 script:
   - git clone https://github.com/power-libraries/primitivepower.git dependency
-  - cd dependency/primitivepower
+  - cd dependency/primitivepower-generator
+  - mvn package install
+  - cd ../primitivepower
   - mvn package install
   - cd ../../arraypower-generator
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
