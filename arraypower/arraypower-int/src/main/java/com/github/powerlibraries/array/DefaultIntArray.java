@@ -59,11 +59,6 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 
 	@Override
-	public void addInt(int index, int element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfInt(int o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Integer> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Integer> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

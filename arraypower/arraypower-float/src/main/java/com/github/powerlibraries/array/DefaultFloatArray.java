@@ -59,11 +59,6 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 
 	@Override
-	public void addFloat(int index, float element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfFloat(float o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Float> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Float> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

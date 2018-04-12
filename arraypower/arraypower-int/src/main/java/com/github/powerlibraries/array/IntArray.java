@@ -106,7 +106,22 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	}
 	
 	@Override
+	public default void addInt(int index, int element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllInts(IntCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Integer> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Integer> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

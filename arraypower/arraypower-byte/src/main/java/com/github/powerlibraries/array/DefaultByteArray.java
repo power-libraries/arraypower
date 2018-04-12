@@ -59,11 +59,6 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	}
 
 	@Override
-	public void addByte(int index, byte element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfByte(byte o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Byte> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Byte> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

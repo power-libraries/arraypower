@@ -61,11 +61,6 @@ public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}Lis
 	}
 
 	@Override
-	public void add{{t.label}}(int index, {{t.type}} element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOf{{t.label}}({{t.type}} o) {
 		for(int i=offset; i<offset+length; i++) {
 			if({{t.equal('elementData[i]','o')}}) {
@@ -93,16 +88,6 @@ public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}Lis
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

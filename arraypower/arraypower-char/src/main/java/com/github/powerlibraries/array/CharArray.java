@@ -106,7 +106,22 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	}
 	
 	@Override
+	public default void addChar(int index, char element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllChars(CharCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Character> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Character> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

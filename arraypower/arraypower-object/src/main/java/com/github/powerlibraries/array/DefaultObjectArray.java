@@ -61,11 +61,6 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	}
 
 	@Override
-	public void addObject(int index, E element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfObject(E o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(Objects.equals(elementData[i], o)) {
@@ -93,16 +88,6 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends E> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends E> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

@@ -106,7 +106,22 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	}
 	
 	@Override
+	public default void addShort(int index, short element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllShorts(ShortCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Short> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Short> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

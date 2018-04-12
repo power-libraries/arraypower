@@ -106,7 +106,22 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	}
 	
 	@Override
+	public default void addLong(int index, long element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllLongs(LongCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Long> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Long> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

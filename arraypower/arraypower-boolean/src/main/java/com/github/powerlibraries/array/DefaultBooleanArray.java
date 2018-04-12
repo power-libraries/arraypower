@@ -59,11 +59,6 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 
 	@Override
-	public void addBoolean(int index, boolean element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfBoolean(boolean o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Boolean> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Boolean> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

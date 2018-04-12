@@ -59,11 +59,6 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 
 	@Override
-	public void addChar(int index, char element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfChar(char o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Character> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Character> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

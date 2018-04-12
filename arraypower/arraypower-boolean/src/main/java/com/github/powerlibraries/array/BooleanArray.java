@@ -106,7 +106,22 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	}
 	
 	@Override
+	public default void addBoolean(int index, boolean element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Boolean> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Boolean> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

@@ -106,7 +106,22 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	}
 	
 	@Override
+	public default void addByte(int index, byte element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllBytes(ByteCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Byte> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Byte> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

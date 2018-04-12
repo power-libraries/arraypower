@@ -59,11 +59,6 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 
 	@Override
-	public void addShort(int index, short element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfShort(short o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Short> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Short> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

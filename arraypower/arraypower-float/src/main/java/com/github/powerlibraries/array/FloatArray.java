@@ -106,7 +106,22 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	}
 	
 	@Override
+	public default void addFloat(int index, float element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllFloats(FloatCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Float> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Float> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

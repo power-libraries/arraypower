@@ -59,11 +59,6 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 
 	@Override
-	public void addDouble(int index, double element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public int indexOfDouble(double o) {
 		for(int i=offset; i<offset+length; i++) {
 			if(elementData[i] == o) {
@@ -91,16 +86,6 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Double> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Double> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override

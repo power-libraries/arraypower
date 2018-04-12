@@ -106,7 +106,22 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	}
 	
 	@Override
+	public default void addDouble(int index, double element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllDoubles(DoubleCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Double> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Double> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

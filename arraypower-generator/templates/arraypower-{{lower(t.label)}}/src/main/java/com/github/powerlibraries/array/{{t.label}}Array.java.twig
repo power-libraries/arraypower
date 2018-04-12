@@ -108,7 +108,22 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	}
 	
 	@Override
+	public default void add{{t.label}}(int index, {{t.type}} element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAll{{t.label}}s({{t.label}}Collection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

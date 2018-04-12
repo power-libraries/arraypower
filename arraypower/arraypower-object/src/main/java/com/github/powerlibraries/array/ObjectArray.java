@@ -100,7 +100,22 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	}
 	
 	@Override
+	public default void addObject(int index, E element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllObjects(ObjectCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends E> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends E> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
