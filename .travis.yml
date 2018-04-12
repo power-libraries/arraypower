@@ -7,9 +7,9 @@ cache:
 script:
   - git clone https://github.com/power-libraries/primitivepower.git dependency
   - cd dependency/primitivepower-generator
-  - mvn package install
+  - mvn package install -DskipTests=true -Dmaven.javadoc.skip=true
   - cd ../primitivepower
-  - mvn package install
+  - mvn package install -DskipTests=true -Dmaven.javadoc.skip=true
   - cd ../../arraypower-generator
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
   - mvn test -Dmaven.javadoc.skip=true -B
