@@ -10,16 +10,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<modules>
-		<module>arraypower-object</module>
-		<module>arraypower-int</module>
-		<module>arraypower-long</module>
-		<module>arraypower-short</module>
-		<module>arraypower-byte</module>
-		<module>arraypower-char</module>
-		<module>arraypower-boolean</module>
-		<module>arraypower-float</module>
-		<module>arraypower-double</module>
+	<modules>{% for p in allTypes %}
+		<module>arraypower-{{lower(p.label)}}</module>{% endfor %}
 		<module>arraypower-primitives</module>
 		<module>arraypower-complete</module>
 		<module>arraypower-common</module>
