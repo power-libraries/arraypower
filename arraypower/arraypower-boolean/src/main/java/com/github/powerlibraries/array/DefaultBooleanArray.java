@@ -2,10 +2,8 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
-import java.util.RandomAccess;
 
 import com.github.powerlibraries.primitive.collections.AbstractBooleanList;
 import com.github.powerlibraries.primitive.collections.BooleanCollection;
@@ -28,22 +26,23 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public boolean getBoolean(int index) {
