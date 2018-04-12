@@ -40,63 +40,63 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	}
 	
 	public static  FloatArray copy(float[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray copy(Float[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray copy(Float[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray wrap(float[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray wrap(FloatArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray copy(float[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray wrap(float[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray wrap(FloatArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(FloatArray arr, float element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(FloatArray arr, float... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(float element, FloatArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(float[] elements, FloatArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(FloatArray arr, Collection<? extends Float> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(Collection<? extends Float> elements, FloatArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(FloatArray arr, FloatArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray reverse(FloatArray arr) {

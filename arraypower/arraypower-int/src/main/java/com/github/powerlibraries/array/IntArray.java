@@ -40,63 +40,63 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	}
 	
 	public static  IntArray copy(int[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray copy(Integer[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray copy(Integer[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray wrap(int[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray wrap(IntArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray copy(int[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray wrap(int[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray wrap(IntArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(IntArray arr, int element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(IntArray arr, int... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(int element, IntArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(int[] elements, IntArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(IntArray arr, Collection<? extends Integer> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(Collection<? extends Integer> elements, IntArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray concat(IntArray arr, IntArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  IntArray reverse(IntArray arr) {

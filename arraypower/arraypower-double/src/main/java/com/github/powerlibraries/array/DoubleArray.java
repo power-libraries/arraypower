@@ -40,63 +40,63 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	}
 	
 	public static  DoubleArray copy(double[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray copy(Double[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray copy(Double[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray wrap(double[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray wrap(DoubleArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray copy(double[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray wrap(double[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray wrap(DoubleArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(DoubleArray arr, double element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(DoubleArray arr, double... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(double element, DoubleArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(double[] elements, DoubleArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(DoubleArray arr, Collection<? extends Double> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(Collection<? extends Double> elements, DoubleArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray concat(DoubleArray arr, DoubleArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  DoubleArray reverse(DoubleArray arr) {

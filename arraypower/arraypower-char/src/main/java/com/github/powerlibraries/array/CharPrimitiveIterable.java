@@ -2,12 +2,12 @@ package com.github.powerlibraries.array;
 
 import java.util.Iterator;
 
-import com.github.powerlibraries.primitive.common.FloatPointer;
+import com.github.powerlibraries.primitive.common.CharacterPointer;
 
-public class ChartPrimitiveIterable implements Iterable<FloatPointer> {
+public class CharPrimitiveIterable implements Iterable<CharacterPointer> {
 
 	@Override
-	public Iterator<FloatPointer> iterator() {
+	public Iterator<CharacterPointer> iterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}

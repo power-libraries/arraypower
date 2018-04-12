@@ -2,12 +2,12 @@ package com.github.powerlibraries.array;
 
 import java.util.Iterator;
 
-import com.github.powerlibraries.primitive.common.FloatPointer;
+import com.github.powerlibraries.primitive.common.DoublePointer;
 
-public class DoubletPrimitiveIterable implements Iterable<FloatPointer> {
+public class DoublePrimitiveIterable implements Iterable<DoublePointer> {
 
 	@Override
-	public Iterator<FloatPointer> iterator() {
+	public Iterator<DoublePointer> iterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}

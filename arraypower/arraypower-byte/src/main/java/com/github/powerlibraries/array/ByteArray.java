@@ -40,63 +40,63 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	}
 	
 	public static  ByteArray copy(byte[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray copy(Byte[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray copy(Byte[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray wrap(byte[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray wrap(ByteArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray copy(byte[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray wrap(byte[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray wrap(ByteArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(ByteArray arr, byte element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(ByteArray arr, byte... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(byte element, ByteArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(byte[] elements, ByteArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(ByteArray arr, Collection<? extends Byte> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(Collection<? extends Byte> elements, ByteArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(ByteArray arr, ByteArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray reverse(ByteArray arr) {

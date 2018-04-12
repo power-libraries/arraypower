@@ -41,55 +41,55 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	}
 	
 	public static <E> ObjectArray<E> copy(E[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> wrap(Object[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> copy(E[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> wrap(Object[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, E element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, E... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(E element, ObjectArray<? extends E> arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(E[] elements, ObjectArray<? extends E> arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, Collection<? extends E> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(Collection<? extends E> elements, ObjectArray<? extends E> arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, ObjectArray<? extends E> arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> reverse(ObjectArray<? extends E> arr) {

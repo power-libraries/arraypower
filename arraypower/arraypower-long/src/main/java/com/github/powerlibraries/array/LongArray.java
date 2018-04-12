@@ -40,63 +40,63 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	}
 	
 	public static  LongArray copy(long[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray copy(Long[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray copy(Long[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray wrap(long[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray wrap(LongArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray copy(long[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray wrap(long[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray wrap(LongArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(LongArray arr, long element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(LongArray arr, long... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(long element, LongArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(long[] elements, LongArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(LongArray arr, Collection<? extends Long> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(Collection<? extends Long> elements, LongArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(LongArray arr, LongArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray reverse(LongArray arr) {

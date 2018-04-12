@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.common.FloatPointer;
 
-public class FloattPrimitiveIterable implements Iterable<FloatPointer> {
+public class FloatPrimitiveIterable implements Iterable<FloatPointer> {
 
 	@Override
 	public Iterator<FloatPointer> iterator() {

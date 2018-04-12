@@ -40,63 +40,63 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	}
 	
 	public static  ShortArray copy(short[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray copy(Short[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray copy(Short[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray wrap(short[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray wrap(ShortArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray copy(short[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray wrap(short[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray wrap(ShortArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(ShortArray arr, short element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(ShortArray arr, short... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(short element, ShortArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(short[] elements, ShortArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(ShortArray arr, Collection<? extends Short> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(Collection<? extends Short> elements, ShortArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(ShortArray arr, ShortArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray reverse(ShortArray arr) {

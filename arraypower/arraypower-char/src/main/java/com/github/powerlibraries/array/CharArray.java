@@ -40,63 +40,63 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	}
 	
 	public static  CharArray copy(char[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray copy(Character[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray copy(Character[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray wrap(char[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray wrap(CharArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray copy(char[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray wrap(char[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray wrap(CharArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(CharArray arr, char element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(CharArray arr, char... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(char element, CharArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(char[] elements, CharArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(CharArray arr, Collection<? extends Character> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(Collection<? extends Character> elements, CharArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(CharArray arr, CharArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray reverse(CharArray arr) {

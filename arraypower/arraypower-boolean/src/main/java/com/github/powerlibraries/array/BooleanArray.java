@@ -40,63 +40,63 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	}
 	
 	public static  BooleanArray copy(boolean[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray copy(Boolean[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray copy(Boolean[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray wrap(boolean[] arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray wrap(BooleanArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray copy(boolean[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray wrap(boolean[] arr, int offset, int length) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray wrap(BooleanArray arr, int offset, int lengt) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, boolean element) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, boolean... elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(boolean element, BooleanArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(boolean[] elements, BooleanArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, Collection<? extends Boolean> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(Collection<? extends Boolean> elements, BooleanArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, BooleanArray arr2) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray reverse(BooleanArray arr) {
