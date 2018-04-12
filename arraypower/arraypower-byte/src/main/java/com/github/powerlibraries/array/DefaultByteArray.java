@@ -224,4 +224,11 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	public Iterable<BytePointer> primitiveIterable(int index) {
 		return new BytePrimitiveIterable(this, index);
 	}
+	
+	public ByteArray reverse() {
+		byte[] a = new byte[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getByte(arr.size()-i-1);
+		return new DefaultByteArray(a);
+	}
 }

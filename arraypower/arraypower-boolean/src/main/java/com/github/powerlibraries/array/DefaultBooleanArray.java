@@ -209,4 +209,11 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	public Iterable<BooleanPointer> primitiveIterable(int index) {
 		return new BooleanPrimitiveIterable(this, index);
 	}
+	
+	public BooleanArray reverse() {
+		boolean[] a = new boolean[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getBoolean(arr.size()-i-1);
+		return new DefaultBooleanArray(a);
+	}
 }

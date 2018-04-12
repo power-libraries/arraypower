@@ -216,4 +216,11 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	public Iterable<ObjectPointer> primitiveIterable(int index) {
 		return new ObjectPrimitiveIterable(this, index);
 	}
+	
+	public ObjectArray<E> reverse() {
+		Object[] a = new Object[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getObject(arr.size()-i-1);
+		return new DefaultObjectArray<E>(a);
+	}
 }

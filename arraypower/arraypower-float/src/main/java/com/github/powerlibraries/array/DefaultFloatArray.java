@@ -224,4 +224,11 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	public Iterable<FloatPointer> primitiveIterable(int index) {
 		return new FloatPrimitiveIterable(this, index);
 	}
+	
+	public FloatArray reverse() {
+		float[] a = new float[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getFloat(arr.size()-i-1);
+		return new DefaultFloatArray(a);
+	}
 }

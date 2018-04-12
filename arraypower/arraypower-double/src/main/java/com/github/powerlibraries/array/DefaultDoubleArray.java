@@ -224,4 +224,11 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	public Iterable<DoublePointer> primitiveIterable(int index) {
 		return new DoublePrimitiveIterable(this, index);
 	}
+	
+	public DoubleArray reverse() {
+		double[] a = new double[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getDouble(arr.size()-i-1);
+		return new DefaultDoubleArray(a);
+	}
 }

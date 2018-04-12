@@ -1,13 +1,9 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
 
 import java.util.Comparator;
-
 
 import com.github.powerlibraries.primitive.collections.ObjectCollection;
 import com.github.powerlibraries.primitive.collections.ObjectList;
@@ -44,15 +40,15 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static <E> ObjectArray<E> copy(E[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static <E> ObjectArray<E> wrap(Object[] arr) {
 		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static <E> ObjectArray<E> copy(E[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -92,12 +88,7 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static <E> ObjectArray<E> reverse(ObjectArray<? extends E> arr) {
-		Object[] a = new Object[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getObject(arr.size()-i-1);
-		return new DefaultObjectArray<E>(a);
-	}
+
 
 
 
@@ -129,4 +120,7 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	public Object[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	ObjectArray<E> reverse();
 }

@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.ShortCollection;
 import com.github.powerlibraries.primitive.collections.ShortList;
@@ -43,6 +38,10 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  ShortArray copy(short[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  ShortArray copy(Short[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	}
 	
 	public static  ShortArray wrap(ShortArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  ShortArray copy(short[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  ShortArray reverse(ShortArray arr) {
-		short[] a = new short[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getShort(arr.size()-i-1);
-		return new DefaultShortArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 		return ShortArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(short key);
 	
 	public void fill(short val);
@@ -137,4 +126,7 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	public short[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	ShortArray reverse();
 }

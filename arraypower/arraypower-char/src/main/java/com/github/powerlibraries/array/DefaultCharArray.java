@@ -224,4 +224,11 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	public Iterable<CharPointer> primitiveIterable(int index) {
 		return new CharPrimitiveIterable(this, index);
 	}
+	
+	public CharArray reverse() {
+		char[] a = new char[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getChar(arr.size()-i-1);
+		return new DefaultCharArray(a);
+	}
 }

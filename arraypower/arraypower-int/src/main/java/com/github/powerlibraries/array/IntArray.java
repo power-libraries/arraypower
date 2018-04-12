@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.IntCollection;
 import com.github.powerlibraries.primitive.collections.IntList;
@@ -43,6 +38,10 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  IntArray copy(int[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  IntArray copy(Integer[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	}
 	
 	public static  IntArray wrap(IntArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  IntArray copy(int[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  IntArray reverse(IntArray arr) {
-		int[] a = new int[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getInt(arr.size()-i-1);
-		return new DefaultIntArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 		return IntArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(int key);
 	
 	public void fill(int val);
@@ -137,4 +126,7 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	public int[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	IntArray reverse();
 }

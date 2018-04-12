@@ -224,4 +224,11 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	public Iterable<LongPointer> primitiveIterable(int index) {
 		return new LongPrimitiveIterable(this, index);
 	}
+	
+	public LongArray reverse() {
+		long[] a = new long[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getLong(arr.size()-i-1);
+		return new DefaultLongArray(a);
+	}
 }

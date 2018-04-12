@@ -224,4 +224,11 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	public Iterable<ShortPointer> primitiveIterable(int index) {
 		return new ShortPrimitiveIterable(this, index);
 	}
+	
+	public ShortArray reverse() {
+		short[] a = new short[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getShort(arr.size()-i-1);
+		return new DefaultShortArray(a);
+	}
 }

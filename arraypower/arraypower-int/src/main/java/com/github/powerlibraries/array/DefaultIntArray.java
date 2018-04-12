@@ -224,4 +224,11 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	public Iterable<IntPointer> primitiveIterable(int index) {
 		return new IntPrimitiveIterable(this, index);
 	}
+	
+	public IntArray reverse() {
+		int[] a = new int[arr.size()];
+		for(int i=0;i<arr.size();i++)
+			a[i] = arr.getInt(arr.size()-i-1);
+		return new DefaultIntArray(a);
+	}
 }

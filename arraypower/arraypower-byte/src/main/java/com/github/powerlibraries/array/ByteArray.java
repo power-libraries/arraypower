@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.ByteCollection;
 import com.github.powerlibraries.primitive.collections.ByteList;
@@ -43,6 +38,10 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  ByteArray copy(byte[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  ByteArray copy(Byte[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	}
 	
 	public static  ByteArray wrap(ByteArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  ByteArray copy(byte[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  ByteArray reverse(ByteArray arr) {
-		byte[] a = new byte[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getByte(arr.size()-i-1);
-		return new DefaultByteArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 		return ByteArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(byte key);
 	
 	public void fill(byte val);
@@ -137,4 +126,7 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	public byte[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	ByteArray reverse();
 }

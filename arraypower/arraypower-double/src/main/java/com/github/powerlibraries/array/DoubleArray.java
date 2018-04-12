@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.DoubleCollection;
 import com.github.powerlibraries.primitive.collections.DoubleList;
@@ -43,6 +38,10 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  DoubleArray copy(double[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  DoubleArray copy(Double[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	}
 	
 	public static  DoubleArray wrap(DoubleArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  DoubleArray copy(double[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  DoubleArray reverse(DoubleArray arr) {
-		double[] a = new double[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getDouble(arr.size()-i-1);
-		return new DefaultDoubleArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 		return DoubleArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(double key);
 	
 	public void fill(double val);
@@ -137,4 +126,7 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	public double[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	DoubleArray reverse();
 }

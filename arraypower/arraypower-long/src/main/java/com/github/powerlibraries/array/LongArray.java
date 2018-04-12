@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.LongCollection;
 import com.github.powerlibraries.primitive.collections.LongList;
@@ -43,6 +38,10 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  LongArray copy(long[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  LongArray copy(Long[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	}
 	
 	public static  LongArray wrap(LongArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  LongArray copy(long[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  LongArray reverse(LongArray arr) {
-		long[] a = new long[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getLong(arr.size()-i-1);
-		return new DefaultLongArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 		return LongArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(long key);
 	
 	public void fill(long val);
@@ -137,4 +126,7 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	public long[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	LongArray reverse();
 }

@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.BooleanCollection;
 import com.github.powerlibraries.primitive.collections.BooleanList;
@@ -43,6 +38,10 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 		// TODO Auto-generated method stub
 	}
 	
+	public static  BooleanArray copy(boolean[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  BooleanArray copy(Boolean[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	}
 	
 	public static  BooleanArray wrap(BooleanArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  BooleanArray copy(boolean[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 		// TODO Auto-generated method stub
 	}
 	
-	public static  BooleanArray reverse(BooleanArray arr) {
-		boolean[] a = new boolean[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getBoolean(arr.size()-i-1);
-		return new DefaultBooleanArray(a);
-	}
+
 
 
 
@@ -134,4 +124,7 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	public boolean[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	BooleanArray reverse();
 }

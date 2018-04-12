@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.FloatCollection;
 import com.github.powerlibraries.primitive.collections.FloatList;
@@ -43,6 +38,10 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  FloatArray copy(float[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  FloatArray copy(Float[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	}
 	
 	public static  FloatArray wrap(FloatArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  FloatArray copy(float[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  FloatArray reverse(FloatArray arr) {
-		float[] a = new float[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getFloat(arr.size()-i-1);
-		return new DefaultFloatArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 		return FloatArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(float key);
 	
 	public void fill(float val);
@@ -137,4 +126,7 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	public float[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	FloatArray reverse();
 }

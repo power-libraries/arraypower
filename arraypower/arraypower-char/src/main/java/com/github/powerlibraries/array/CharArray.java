@@ -1,12 +1,7 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.CharCollection;
 import com.github.powerlibraries.primitive.collections.CharList;
@@ -43,6 +38,10 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
+	public static  CharArray copy(char[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
+	
 	public static  CharArray copy(Character[] arr) {
 		// TODO Auto-generated method stub
 	}
@@ -56,10 +55,6 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	}
 	
 	public static  CharArray wrap(CharArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  CharArray copy(char[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -99,12 +94,7 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 		// TODO Auto-generated method stub
 	}
 	
-	public static  CharArray reverse(CharArray arr) {
-		char[] a = new char[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getChar(arr.size()-i-1);
-		return new DefaultCharArray(a);
-	}
+
 
 
 
@@ -129,7 +119,6 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 		return CharArray.wrap(this, offset, length);
 	}
 	
-	
 	public int binarySearch(char key);
 	
 	public void fill(char val);
@@ -137,4 +126,7 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	public char[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	CharArray reverse();
 }

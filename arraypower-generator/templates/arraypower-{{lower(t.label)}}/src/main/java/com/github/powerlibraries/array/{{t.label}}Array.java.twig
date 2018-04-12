@@ -1,15 +1,10 @@
 package com.github.powerlibraries.array;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-{% if t.primitive %}
-{% else %}
+{% if t.primitive %}{% else %}
 import java.util.Comparator;
 {% endif %}
-
 import com.github.powerlibraries.primitive.collections.{{t.label}}Collection;
 import com.github.powerlibraries.primitive.collections.{{t.label}}List;
 
@@ -44,6 +39,10 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.type}}[] arr) {
 		// TODO Auto-generated method stub
 	}
+	
+	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.type}}[] arr, int offset, int length) {
+		// TODO Auto-generated method stub
+	}
 	{% if t.primitive %}
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.boxed}}[] arr) {
 		// TODO Auto-generated method stub
@@ -58,10 +57,6 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.label}}Array{{t.extendedGeneric}} arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.type}}[] arr, int offset, int length) {
 		// TODO Auto-generated method stub
 	}
 	
@@ -101,12 +96,7 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 		// TODO Auto-generated method stub
 	}
 	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} reverse({{t.label}}Array{{t.extendedGeneric}} arr) {
-		{{t.arrayType}}[] a = new {{t.arrayType}}[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.get{{t.label}}(arr.size()-i-1);
-		return new Default{{t.label}}Array{{t.generic}}(a);
-	}
+
 
 
 
@@ -131,7 +121,6 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 		return {{t.label}}Array.wrap(this, offset, length);
 	}
 	{% if t.numeric %}
-	
 	public int binarySearch({{t.type}} key);
 	{% elseif not (t.primitive) %}
 	public int binarySearch({{t.type}} key, Comparator<{{t.boxed}}> comp);
@@ -141,4 +130,7 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	public {{t.arrayType}}[] getInternalArray();
 	
 	public int getInternalOffset();
+	
+	@Override
+	{{t.label}}Array{{t.generic}} reverse();
 }
