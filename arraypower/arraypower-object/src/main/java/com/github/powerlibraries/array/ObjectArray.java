@@ -135,7 +135,4 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	public Object[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	ObjectArray<E> reverse();
 }

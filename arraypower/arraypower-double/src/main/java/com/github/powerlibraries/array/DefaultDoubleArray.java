@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractDoubleList;
-import com.github.powerlibraries.primitive.collections.DoubleCollection;
+import com.github.powerlibraries.primitive.collections.DoubleListIterator;
+import com.github.powerlibraries.primitive.common.DefaultDoublePointer;
 import com.github.powerlibraries.primitive.common.DoublePointer;
 
 public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArray {
@@ -123,7 +123,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	
 	@Override
 	public boolean removeDouble(double o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0d;
 				return true;
@@ -200,19 +200,61 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 	
 	@Override
-	public ListIterator<Double> listIterator(int index) {
-		return new ArrayIterator<Double>(this, index);
+	public DoubleListIterator listIterator(int index) {
+		return new DoubleArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<DoublePointer> primitiveIterable(int index) {
-		return new DoublePrimitiveIterable(this, index);
+		return new DoublePrimitiveIterable(index);
 	}
 	
-	public DoubleArray reverse() {
-		double[] a = new double[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getDouble(arr.size()-i-1);
-		return new DefaultDoubleArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			double temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class DoublePrimitiveIterable implements Iterable<DoublePointer> {
+
+		private int initialPosition;
+
+		public DoublePrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<DoublePointer> iterator() {
+			return new DoublePointerIterator(initialPosition);
+		}
+	}
+	
+	private class DoublePointerIterator implements Iterator<DoublePointer> {
+
+		private int position;
+		private DefaultDoublePointer pointer;
+		
+		public DoublePointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultDoublePointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public DoublePointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getDouble(position));
+			return pointer;
+		}
+		
 	}
 }

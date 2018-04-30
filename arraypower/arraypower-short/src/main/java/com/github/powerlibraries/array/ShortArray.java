@@ -141,7 +141,4 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	public short[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	ShortArray reverse();
 }

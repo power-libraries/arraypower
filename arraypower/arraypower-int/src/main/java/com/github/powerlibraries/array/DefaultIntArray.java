@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractIntList;
-import com.github.powerlibraries.primitive.collections.IntCollection;
+import com.github.powerlibraries.primitive.collections.IntListIterator;
+import com.github.powerlibraries.primitive.common.DefaultIntPointer;
 import com.github.powerlibraries.primitive.common.IntPointer;
 
 public class DefaultIntArray extends AbstractIntList implements IntArray {
@@ -123,7 +123,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	
 	@Override
 	public boolean removeInt(int o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0;
 				return true;
@@ -200,19 +200,61 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 	
 	@Override
-	public ListIterator<Integer> listIterator(int index) {
-		return new ArrayIterator<Integer>(this, index);
+	public IntListIterator listIterator(int index) {
+		return new IntArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<IntPointer> primitiveIterable(int index) {
-		return new IntPrimitiveIterable(this, index);
+		return new IntPrimitiveIterable(index);
 	}
 	
-	public IntArray reverse() {
-		int[] a = new int[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getInt(arr.size()-i-1);
-		return new DefaultIntArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			int temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class IntPrimitiveIterable implements Iterable<IntPointer> {
+
+		private int initialPosition;
+
+		public IntPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<IntPointer> iterator() {
+			return new IntPointerIterator(initialPosition);
+		}
+	}
+	
+	private class IntPointerIterator implements Iterator<IntPointer> {
+
+		private int position;
+		private DefaultIntPointer pointer;
+		
+		public IntPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultIntPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public IntPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getInt(position));
+			return pointer;
+		}
+		
 	}
 }

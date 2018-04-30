@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractLongList;
-import com.github.powerlibraries.primitive.collections.LongCollection;
+import com.github.powerlibraries.primitive.collections.LongListIterator;
+import com.github.powerlibraries.primitive.common.DefaultLongPointer;
 import com.github.powerlibraries.primitive.common.LongPointer;
 
 public class DefaultLongArray extends AbstractLongList implements LongArray {
@@ -123,7 +123,7 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	
 	@Override
 	public boolean removeLong(long o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0L;
 				return true;
@@ -200,19 +200,61 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	}
 	
 	@Override
-	public ListIterator<Long> listIterator(int index) {
-		return new ArrayIterator<Long>(this, index);
+	public LongListIterator listIterator(int index) {
+		return new LongArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<LongPointer> primitiveIterable(int index) {
-		return new LongPrimitiveIterable(this, index);
+		return new LongPrimitiveIterable(index);
 	}
 	
-	public LongArray reverse() {
-		long[] a = new long[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getLong(arr.size()-i-1);
-		return new DefaultLongArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			long temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class LongPrimitiveIterable implements Iterable<LongPointer> {
+
+		private int initialPosition;
+
+		public LongPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<LongPointer> iterator() {
+			return new LongPointerIterator(initialPosition);
+		}
+	}
+	
+	private class LongPointerIterator implements Iterator<LongPointer> {
+
+		private int position;
+		private DefaultLongPointer pointer;
+		
+		public LongPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultLongPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public LongPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getLong(position));
+			return pointer;
+		}
+		
 	}
 }

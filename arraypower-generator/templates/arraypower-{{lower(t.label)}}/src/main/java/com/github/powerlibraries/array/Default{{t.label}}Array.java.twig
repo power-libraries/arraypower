@@ -2,13 +2,14 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 {% if not(t.primitive) %}
 import java.util.Comparator;
+import java.util.Objects;
 {% endif %}
 import com.github.powerlibraries.primitive.collections.Abstract{{t.label}}List;
-import com.github.powerlibraries.primitive.collections.{{t.label}}Collection;
+import com.github.powerlibraries.primitive.collections.{{t.label}}ListIterator;
+import com.github.powerlibraries.primitive.common.Default{{t.label}}Pointer;
 import com.github.powerlibraries.primitive.common.{{t.label}}Pointer;
 
 public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}List{{t.generic}} implements {{t.label}}Array{{t.generic}} {
@@ -125,7 +126,7 @@ public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}Lis
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -197,7 +198,7 @@ public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}Lis
 	
 	@Override
 	public boolean remove{{t.label}}({{t.type}} o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if({{t.equal('elementData[i]','o')}}) {
 				elementData[i] = {{t.neutralElement}};
 				return true;
@@ -207,19 +208,61 @@ public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}Lis
 	}
 	
 	@Override
-	public ListIterator<{{t.boxed}}> listIterator(int index) {
-		return new ArrayIterator<{{t.boxed}}>(this, index);
+	public {{t.label}}ListIterator{{t.generic}} listIterator(int index) {
+		return new {{t.label}}ArrayIterator{{t.generic}}(this, index);
 	}
 
 	@Override
-	public Iterable<{{t.label}}Pointer> primitiveIterable(int index) {
-		return new {{t.label}}PrimitiveIterable(this, index);
+	public Iterable<{{t.label}}Pointer{{t.generic}}> primitiveIterable(int index) {
+		return new {{t.label}}PrimitiveIterable(index);
 	}
 	
-	public {{t.label}}Array{{t.generic}} reverse() {
-		{{t.arrayType}}[] a = new {{t.arrayType}}[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.get{{t.label}}(arr.size()-i-1);
-		return new Default{{t.label}}Array{{t.generic}}(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			{{t.arrayType}} temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class {{t.label}}PrimitiveIterable implements Iterable<{{t.label}}Pointer{{t.generic}}> {
+
+		private int initialPosition;
+
+		public {{t.label}}PrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<{{t.label}}Pointer{{t.generic}}> iterator() {
+			return new {{t.label}}PointerIterator(initialPosition);
+		}
+	}
+	
+	private class {{t.label}}PointerIterator implements Iterator<{{t.label}}Pointer{{t.generic}}> {
+
+		private int position;
+		private Default{{t.label}}Pointer{{t.generic}} pointer;
+		
+		public {{t.label}}PointerIterator(int position) {
+			this.position = position;
+			this.pointer = new Default{{t.label}}Pointer{{t.generic}}();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public {{t.label}}Pointer{{t.generic}} next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(get{{t.label}}(position));
+			return pointer;
+		}
+		
 	}
 }

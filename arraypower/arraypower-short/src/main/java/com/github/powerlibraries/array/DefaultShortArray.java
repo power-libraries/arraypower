@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractShortList;
-import com.github.powerlibraries.primitive.collections.ShortCollection;
+import com.github.powerlibraries.primitive.collections.ShortListIterator;
+import com.github.powerlibraries.primitive.common.DefaultShortPointer;
 import com.github.powerlibraries.primitive.common.ShortPointer;
 
 public class DefaultShortArray extends AbstractShortList implements ShortArray {
@@ -123,7 +123,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	
 	@Override
 	public boolean removeShort(short o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = ((short)0);
 				return true;
@@ -200,19 +200,61 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 	
 	@Override
-	public ListIterator<Short> listIterator(int index) {
-		return new ArrayIterator<Short>(this, index);
+	public ShortListIterator listIterator(int index) {
+		return new ShortArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<ShortPointer> primitiveIterable(int index) {
-		return new ShortPrimitiveIterable(this, index);
+		return new ShortPrimitiveIterable(index);
 	}
 	
-	public ShortArray reverse() {
-		short[] a = new short[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getShort(arr.size()-i-1);
-		return new DefaultShortArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			short temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class ShortPrimitiveIterable implements Iterable<ShortPointer> {
+
+		private int initialPosition;
+
+		public ShortPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<ShortPointer> iterator() {
+			return new ShortPointerIterator(initialPosition);
+		}
+	}
+	
+	private class ShortPointerIterator implements Iterator<ShortPointer> {
+
+		private int position;
+		private DefaultShortPointer pointer;
+		
+		public ShortPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultShortPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public ShortPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getShort(position));
+			return pointer;
+		}
+		
 	}
 }

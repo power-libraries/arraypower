@@ -2,13 +2,14 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 import com.github.powerlibraries.primitive.collections.AbstractObjectList;
-import com.github.powerlibraries.primitive.collections.ObjectCollection;
+import com.github.powerlibraries.primitive.collections.ObjectListIterator;
+import com.github.powerlibraries.primitive.common.DefaultObjectPointer;
 import com.github.powerlibraries.primitive.common.ObjectPointer;
 
 public class DefaultObjectArray<E> extends AbstractObjectList<E> implements ObjectArray<E> {
@@ -125,7 +126,7 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -182,7 +183,7 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	
 	@Override
 	public boolean removeObject(E o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(Objects.equals(elementData[i], o)) {
 				elementData[i] = null;
 				return true;
@@ -192,19 +193,61 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	}
 	
 	@Override
-	public ListIterator<E> listIterator(int index) {
-		return new ArrayIterator<E>(this, index);
+	public ObjectListIterator<E> listIterator(int index) {
+		return new ObjectArrayIterator<E>(this, index);
 	}
 
 	@Override
-	public Iterable<ObjectPointer> primitiveIterable(int index) {
-		return new ObjectPrimitiveIterable(this, index);
+	public Iterable<ObjectPointer<E>> primitiveIterable(int index) {
+		return new ObjectPrimitiveIterable(index);
 	}
 	
-	public ObjectArray<E> reverse() {
-		Object[] a = new Object[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getObject(arr.size()-i-1);
-		return new DefaultObjectArray<E>(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			Object temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class ObjectPrimitiveIterable implements Iterable<ObjectPointer<E>> {
+
+		private int initialPosition;
+
+		public ObjectPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<ObjectPointer<E>> iterator() {
+			return new ObjectPointerIterator(initialPosition);
+		}
+	}
+	
+	private class ObjectPointerIterator implements Iterator<ObjectPointer<E>> {
+
+		private int position;
+		private DefaultObjectPointer<E> pointer;
+		
+		public ObjectPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultObjectPointer<E>();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public ObjectPointer<E> next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getObject(position));
+			return pointer;
+		}
+		
 	}
 }

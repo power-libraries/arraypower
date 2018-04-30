@@ -141,7 +141,4 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	public int[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	IntArray reverse();
 }

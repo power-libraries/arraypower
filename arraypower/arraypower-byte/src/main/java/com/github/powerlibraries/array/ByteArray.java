@@ -141,7 +141,4 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	public byte[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	ByteArray reverse();
 }

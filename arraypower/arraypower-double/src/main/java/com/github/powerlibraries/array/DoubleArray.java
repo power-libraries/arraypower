@@ -141,7 +141,4 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	public double[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	DoubleArray reverse();
 }

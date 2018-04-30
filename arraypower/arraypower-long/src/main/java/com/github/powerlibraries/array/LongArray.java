@@ -141,7 +141,4 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	public long[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	LongArray reverse();
 }

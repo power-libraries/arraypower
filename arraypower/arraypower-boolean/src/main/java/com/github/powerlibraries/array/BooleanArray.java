@@ -139,7 +139,4 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	public boolean[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	BooleanArray reverse();
 }

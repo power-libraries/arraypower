@@ -141,7 +141,4 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	public char[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	CharArray reverse();
 }

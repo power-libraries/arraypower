@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractFloatList;
-import com.github.powerlibraries.primitive.collections.FloatCollection;
+import com.github.powerlibraries.primitive.collections.FloatListIterator;
+import com.github.powerlibraries.primitive.common.DefaultFloatPointer;
 import com.github.powerlibraries.primitive.common.FloatPointer;
 
 public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
@@ -123,7 +123,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	
 	@Override
 	public boolean removeFloat(float o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0f;
 				return true;
@@ -200,19 +200,61 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 	
 	@Override
-	public ListIterator<Float> listIterator(int index) {
-		return new ArrayIterator<Float>(this, index);
+	public FloatListIterator listIterator(int index) {
+		return new FloatArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<FloatPointer> primitiveIterable(int index) {
-		return new FloatPrimitiveIterable(this, index);
+		return new FloatPrimitiveIterable(index);
 	}
 	
-	public FloatArray reverse() {
-		float[] a = new float[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getFloat(arr.size()-i-1);
-		return new DefaultFloatArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			float temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class FloatPrimitiveIterable implements Iterable<FloatPointer> {
+
+		private int initialPosition;
+
+		public FloatPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<FloatPointer> iterator() {
+			return new FloatPointerIterator(initialPosition);
+		}
+	}
+	
+	private class FloatPointerIterator implements Iterator<FloatPointer> {
+
+		private int position;
+		private DefaultFloatPointer pointer;
+		
+		public FloatPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultFloatPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public FloatPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getFloat(position));
+			return pointer;
+		}
+		
 	}
 }

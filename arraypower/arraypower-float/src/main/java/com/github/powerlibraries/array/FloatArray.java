@@ -141,7 +141,4 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	public float[] getInternalArray();
 	
 	public int getInternalOffset();
-	
-	@Override
-	FloatArray reverse();
 }

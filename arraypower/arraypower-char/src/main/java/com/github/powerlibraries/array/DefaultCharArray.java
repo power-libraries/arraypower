@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractCharList;
-import com.github.powerlibraries.primitive.collections.CharCollection;
+import com.github.powerlibraries.primitive.collections.CharListIterator;
+import com.github.powerlibraries.primitive.common.DefaultCharPointer;
 import com.github.powerlibraries.primitive.common.CharPointer;
 
 public class DefaultCharArray extends AbstractCharList implements CharArray {
@@ -123,7 +123,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -190,7 +190,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	
 	@Override
 	public boolean removeChar(char o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = '\u0000';
 				return true;
@@ -200,19 +200,61 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 	
 	@Override
-	public ListIterator<Character> listIterator(int index) {
-		return new ArrayIterator<Character>(this, index);
+	public CharListIterator listIterator(int index) {
+		return new CharArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<CharPointer> primitiveIterable(int index) {
-		return new CharPrimitiveIterable(this, index);
+		return new CharPrimitiveIterable(index);
 	}
 	
-	public CharArray reverse() {
-		char[] a = new char[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getChar(arr.size()-i-1);
-		return new DefaultCharArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			char temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class CharPrimitiveIterable implements Iterable<CharPointer> {
+
+		private int initialPosition;
+
+		public CharPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<CharPointer> iterator() {
+			return new CharPointerIterator(initialPosition);
+		}
+	}
+	
+	private class CharPointerIterator implements Iterator<CharPointer> {
+
+		private int position;
+		private DefaultCharPointer pointer;
+		
+		public CharPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultCharPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public CharPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getChar(position));
+			return pointer;
+		}
+		
 	}
 }

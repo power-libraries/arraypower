@@ -2,11 +2,11 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractBooleanList;
-import com.github.powerlibraries.primitive.collections.BooleanCollection;
+import com.github.powerlibraries.primitive.collections.BooleanListIterator;
+import com.github.powerlibraries.primitive.common.DefaultBooleanPointer;
 import com.github.powerlibraries.primitive.common.BooleanPointer;
 
 public class DefaultBooleanArray extends AbstractBooleanList implements BooleanArray {
@@ -123,7 +123,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -175,7 +175,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	
 	@Override
 	public boolean removeBoolean(boolean o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = false;
 				return true;
@@ -185,19 +185,61 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 	
 	@Override
-	public ListIterator<Boolean> listIterator(int index) {
-		return new ArrayIterator<Boolean>(this, index);
+	public BooleanListIterator listIterator(int index) {
+		return new BooleanArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<BooleanPointer> primitiveIterable(int index) {
-		return new BooleanPrimitiveIterable(this, index);
+		return new BooleanPrimitiveIterable(index);
 	}
 	
-	public BooleanArray reverse() {
-		boolean[] a = new boolean[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getBoolean(arr.size()-i-1);
-		return new DefaultBooleanArray(a);
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			boolean temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	private class BooleanPrimitiveIterable implements Iterable<BooleanPointer> {
+
+		private int initialPosition;
+
+		public BooleanPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<BooleanPointer> iterator() {
+			return new BooleanPointerIterator(initialPosition);
+		}
+	}
+	
+	private class BooleanPointerIterator implements Iterator<BooleanPointer> {
+
+		private int position;
+		private DefaultBooleanPointer pointer;
+		
+		public BooleanPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultBooleanPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public BooleanPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getBoolean(position));
+			return pointer;
+		}
+		
 	}
 }
