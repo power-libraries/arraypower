@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 	
 	@Override
-	public Integer remove(int index) {
+	public int removeAt(int index) {
 		rangeCheck(index);
 		int old = elementData[offset+index];
 		elementData[offset+index] = 0;
@@ -216,6 +217,11 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public IntBuffer asBuffer() {
+		return IntBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class IntPrimitiveIterable implements Iterable<IntPointer> {

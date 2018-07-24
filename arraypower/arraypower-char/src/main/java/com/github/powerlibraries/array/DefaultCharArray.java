@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 	
 	@Override
-	public Character remove(int index) {
+	public char removeAt(int index) {
 		rangeCheck(index);
 		char old = elementData[offset+index];
 		elementData[offset+index] = '\u0000';
@@ -216,6 +217,11 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public CharBuffer asBuffer() {
+		return CharBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class CharPrimitiveIterable implements Iterable<CharPointer> {

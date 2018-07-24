@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	}
 	
 	public static  BooleanArray copy(boolean[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultBooleanArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  BooleanArray copy(boolean[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultBooleanArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  BooleanArray copy(Boolean[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  BooleanArray copy(Boolean[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		boolean[] copy = new boolean[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultBooleanArray(copy);
 	}
 	
-	public static  BooleanArray wrap(boolean[] arr) {
-		// TODO Auto-generated method stub
+	public static  BooleanArray wrap(boolean... arr) {
+		return new DefaultBooleanArray(arr);
 	}
 	
 	public static  BooleanArray wrap(BooleanArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultBooleanArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  BooleanArray wrap(boolean[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultBooleanArray(arr, offset, length);
 	}
-	
+
 	public static  BooleanArray wrap(BooleanArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultBooleanArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, boolean element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  BooleanArray concat(BooleanArray arr, boolean... elements) {
-		// TODO Auto-generated method stub
+		boolean[] result = new boolean[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  BooleanArray concat(boolean element, BooleanArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  BooleanArray concat(boolean[] elements, BooleanArray arr) {
-		// TODO Auto-generated method stub
+		boolean[] result = new boolean[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, Collection<? extends Boolean> elements) {
@@ -93,8 +97,6 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	public static  BooleanArray concat(BooleanArray arr, BooleanArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

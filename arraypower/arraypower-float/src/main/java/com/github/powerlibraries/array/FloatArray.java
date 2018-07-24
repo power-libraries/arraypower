@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	}
 	
 	public static  FloatArray copy(float[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultFloatArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  FloatArray copy(float[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultFloatArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  FloatArray copy(Float[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  FloatArray copy(Float[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		float[] copy = new float[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultFloatArray(copy);
 	}
 	
-	public static  FloatArray wrap(float[] arr) {
-		// TODO Auto-generated method stub
+	public static  FloatArray wrap(float... arr) {
+		return new DefaultFloatArray(arr);
 	}
 	
 	public static  FloatArray wrap(FloatArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultFloatArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  FloatArray wrap(float[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultFloatArray(arr, offset, length);
 	}
-	
+
 	public static  FloatArray wrap(FloatArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultFloatArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  FloatArray concat(FloatArray arr, float element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  FloatArray concat(FloatArray arr, float... elements) {
-		// TODO Auto-generated method stub
+		float[] result = new float[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  FloatArray concat(float element, FloatArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  FloatArray concat(float[] elements, FloatArray arr) {
-		// TODO Auto-generated method stub
+		float[] result = new float[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  FloatArray concat(FloatArray arr, Collection<? extends Float> elements) {
@@ -93,8 +97,6 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	public static  FloatArray concat(FloatArray arr, FloatArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

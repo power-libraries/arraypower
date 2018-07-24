@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.BooleanBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -148,7 +149,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 	
 	@Override
-	public Boolean remove(int index) {
+	public boolean removeAt(int index) {
 		rangeCheck(index);
 		boolean old = elementData[offset+index];
 		elementData[offset+index] = false;
@@ -201,6 +202,11 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public BooleanBuffer asBuffer() {
+		return BooleanBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class BooleanPrimitiveIterable implements Iterable<BooleanPointer> {

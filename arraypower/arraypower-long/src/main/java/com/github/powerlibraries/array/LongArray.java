@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	}
 	
 	public static  LongArray copy(long[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultLongArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  LongArray copy(long[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultLongArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  LongArray copy(Long[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  LongArray copy(Long[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		long[] copy = new long[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultLongArray(copy);
 	}
 	
-	public static  LongArray wrap(long[] arr) {
-		// TODO Auto-generated method stub
+	public static  LongArray wrap(long... arr) {
+		return new DefaultLongArray(arr);
 	}
 	
 	public static  LongArray wrap(LongArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultLongArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  LongArray wrap(long[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultLongArray(arr, offset, length);
 	}
-	
+
 	public static  LongArray wrap(LongArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultLongArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  LongArray concat(LongArray arr, long element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  LongArray concat(LongArray arr, long... elements) {
-		// TODO Auto-generated method stub
+		long[] result = new long[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  LongArray concat(long element, LongArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  LongArray concat(long[] elements, LongArray arr) {
-		// TODO Auto-generated method stub
+		long[] result = new long[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  LongArray concat(LongArray arr, Collection<? extends Long> elements) {
@@ -93,8 +97,6 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	public static  LongArray concat(LongArray arr, LongArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

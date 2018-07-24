@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	}
 	
 	public static  IntArray copy(int[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultIntArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  IntArray copy(int[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultIntArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  IntArray copy(Integer[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  IntArray copy(Integer[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		int[] copy = new int[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultIntArray(copy);
 	}
 	
-	public static  IntArray wrap(int[] arr) {
-		// TODO Auto-generated method stub
+	public static  IntArray wrap(int... arr) {
+		return new DefaultIntArray(arr);
 	}
 	
 	public static  IntArray wrap(IntArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultIntArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  IntArray wrap(int[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultIntArray(arr, offset, length);
 	}
-	
+
 	public static  IntArray wrap(IntArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultIntArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  IntArray concat(IntArray arr, int element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  IntArray concat(IntArray arr, int... elements) {
-		// TODO Auto-generated method stub
+		int[] result = new int[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  IntArray concat(int element, IntArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  IntArray concat(int[] elements, IntArray arr) {
-		// TODO Auto-generated method stub
+		int[] result = new int[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  IntArray concat(IntArray arr, Collection<? extends Integer> elements) {
@@ -93,8 +97,6 @@ public interface IntArray extends IntList, Array<Integer>, RandomAccess {
 	public static  IntArray concat(IntArray arr, IntArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

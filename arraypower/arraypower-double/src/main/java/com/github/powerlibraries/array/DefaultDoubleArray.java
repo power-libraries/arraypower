@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 	
 	@Override
-	public Double remove(int index) {
+	public double removeAt(int index) {
 		rangeCheck(index);
 		double old = elementData[offset+index];
 		elementData[offset+index] = 0d;
@@ -216,6 +217,11 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public DoubleBuffer asBuffer() {
+		return DoubleBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class DoublePrimitiveIterable implements Iterable<DoublePointer> {

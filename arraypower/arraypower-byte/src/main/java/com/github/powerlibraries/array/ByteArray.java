@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	}
 	
 	public static  ByteArray copy(byte[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultByteArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  ByteArray copy(byte[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultByteArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  ByteArray copy(Byte[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  ByteArray copy(Byte[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		byte[] copy = new byte[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultByteArray(copy);
 	}
 	
-	public static  ByteArray wrap(byte[] arr) {
-		// TODO Auto-generated method stub
+	public static  ByteArray wrap(byte... arr) {
+		return new DefaultByteArray(arr);
 	}
 	
 	public static  ByteArray wrap(ByteArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultByteArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ByteArray wrap(byte[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultByteArray(arr, offset, length);
 	}
-	
+
 	public static  ByteArray wrap(ByteArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultByteArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ByteArray concat(ByteArray arr, byte element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  ByteArray concat(ByteArray arr, byte... elements) {
-		// TODO Auto-generated method stub
+		byte[] result = new byte[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  ByteArray concat(byte element, ByteArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  ByteArray concat(byte[] elements, ByteArray arr) {
-		// TODO Auto-generated method stub
+		byte[] result = new byte[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  ByteArray concat(ByteArray arr, Collection<? extends Byte> elements) {
@@ -93,8 +97,6 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	public static  ByteArray concat(ByteArray arr, ByteArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

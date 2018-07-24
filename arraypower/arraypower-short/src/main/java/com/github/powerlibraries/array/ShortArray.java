@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	}
 	
 	public static  ShortArray copy(short[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultShortArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  ShortArray copy(short[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultShortArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  ShortArray copy(Short[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  ShortArray copy(Short[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		short[] copy = new short[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultShortArray(copy);
 	}
 	
-	public static  ShortArray wrap(short[] arr) {
-		// TODO Auto-generated method stub
+	public static  ShortArray wrap(short... arr) {
+		return new DefaultShortArray(arr);
 	}
 	
 	public static  ShortArray wrap(ShortArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultShortArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ShortArray wrap(short[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultShortArray(arr, offset, length);
 	}
-	
+
 	public static  ShortArray wrap(ShortArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultShortArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ShortArray concat(ShortArray arr, short element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  ShortArray concat(ShortArray arr, short... elements) {
-		// TODO Auto-generated method stub
+		short[] result = new short[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  ShortArray concat(short element, ShortArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  ShortArray concat(short[] elements, ShortArray arr) {
-		// TODO Auto-generated method stub
+		short[] result = new short[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  ShortArray concat(ShortArray arr, Collection<? extends Short> elements) {
@@ -93,8 +97,6 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	public static  ShortArray concat(ShortArray arr, ShortArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

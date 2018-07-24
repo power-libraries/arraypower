@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.ShortBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 	
 	@Override
-	public Short remove(int index) {
+	public short removeAt(int index) {
 		rangeCheck(index);
 		short old = elementData[offset+index];
 		elementData[offset+index] = ((short)0);
@@ -216,6 +217,11 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public ShortBuffer asBuffer() {
+		return ShortBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class ShortPrimitiveIterable implements Iterable<ShortPointer> {

@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.LongBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	}
 	
 	@Override
-	public Long remove(int index) {
+	public long removeAt(int index) {
 		rangeCheck(index);
 		long old = elementData[offset+index];
 		elementData[offset+index] = 0L;
@@ -216,6 +217,11 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public LongBuffer asBuffer() {
+		return LongBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class LongPrimitiveIterable implements Iterable<LongPointer> {

@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	}
 	
 	@Override
-	public Byte remove(int index) {
+	public byte removeAt(int index) {
 		rangeCheck(index);
 		byte old = elementData[offset+index];
 		elementData[offset+index] = 0;
@@ -216,6 +217,11 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public ByteBuffer asBuffer() {
+		return ByteBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class BytePrimitiveIterable implements Iterable<BytePointer> {

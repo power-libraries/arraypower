@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -163,7 +164,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 	
 	@Override
-	public Float remove(int index) {
+	public float removeAt(int index) {
 		rangeCheck(index);
 		float old = elementData[offset+index];
 		elementData[offset+index] = 0f;
@@ -216,6 +217,11 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public FloatBuffer asBuffer() {
+		return FloatBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class FloatPrimitiveIterable implements Iterable<FloatPointer> {

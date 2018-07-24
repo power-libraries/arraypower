@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	}
 	
 	public static  DoubleArray copy(double[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultDoubleArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  DoubleArray copy(double[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultDoubleArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  DoubleArray copy(Double[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  DoubleArray copy(Double[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		double[] copy = new double[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultDoubleArray(copy);
 	}
 	
-	public static  DoubleArray wrap(double[] arr) {
-		// TODO Auto-generated method stub
+	public static  DoubleArray wrap(double... arr) {
+		return new DefaultDoubleArray(arr);
 	}
 	
 	public static  DoubleArray wrap(DoubleArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultDoubleArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  DoubleArray wrap(double[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultDoubleArray(arr, offset, length);
 	}
-	
+
 	public static  DoubleArray wrap(DoubleArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultDoubleArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  DoubleArray concat(DoubleArray arr, double element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  DoubleArray concat(DoubleArray arr, double... elements) {
-		// TODO Auto-generated method stub
+		double[] result = new double[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  DoubleArray concat(double element, DoubleArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  DoubleArray concat(double[] elements, DoubleArray arr) {
-		// TODO Auto-generated method stub
+		double[] result = new double[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  DoubleArray concat(DoubleArray arr, Collection<? extends Double> elements) {
@@ -93,8 +97,6 @@ public interface DoubleArray extends DoubleList, Array<Double>, RandomAccess {
 	public static  DoubleArray concat(DoubleArray arr, DoubleArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -37,43 +38,42 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	}
 	
 	public static <E> ObjectArray<E> copy(E[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultObjectArray<E>(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static <E> ObjectArray<E> copy(E[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultObjectArray<E>(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
-	public static <E> ObjectArray<E> wrap(Object[] arr) {
-		// TODO Auto-generated method stub
+	public static <E> ObjectArray<E> wrap(Object... arr) {
+		return new DefaultObjectArray<E>(arr);
 	}
 	
 	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr) {
-		// TODO Auto-generated method stub
+		return new DefaultObjectArray<E>(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static <E> ObjectArray<E> wrap(Object[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultObjectArray<E>(arr, offset, length);
 	}
-	
+
 	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultObjectArray<E>(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, E element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, E... elements) {
-		// TODO Auto-generated method stub
+		Object[] result = new Object[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static <E> ObjectArray<E> concat(E element, ObjectArray<? extends E> arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static <E> ObjectArray<E> concat(E[] elements, ObjectArray<? extends E> arr) {
-		// TODO Auto-generated method stub
+		Object[] result = new Object[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, Collection<? extends E> elements) {
@@ -87,8 +87,6 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, ObjectArray<? extends E> arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

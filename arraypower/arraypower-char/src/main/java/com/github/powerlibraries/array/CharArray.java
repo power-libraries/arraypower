@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.RandomAccess;
 
@@ -35,51 +36,54 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	}
 	
 	public static  CharArray copy(char[] arr) {
-		// TODO Auto-generated method stub
+		return new DefaultCharArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  CharArray copy(char[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultCharArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
 	public static  CharArray copy(Character[] arr) {
-		// TODO Auto-generated method stub
+		return copy(arr, 0, arr.length);
 	}
 	
 	public static  CharArray copy(Character[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		char[] copy = new char[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultCharArray(copy);
 	}
 	
-	public static  CharArray wrap(char[] arr) {
-		// TODO Auto-generated method stub
+	public static  CharArray wrap(char... arr) {
+		return new DefaultCharArray(arr);
 	}
 	
 	public static  CharArray wrap(CharArray arr) {
-		// TODO Auto-generated method stub
+		return new DefaultCharArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  CharArray wrap(char[] arr, int offset, int length) {
-		// TODO Auto-generated method stub
+		return new DefaultCharArray(arr, offset, length);
 	}
-	
+
 	public static  CharArray wrap(CharArray arr, int offset, int lengt) {
-		// TODO Auto-generated method stub
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultCharArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  CharArray concat(CharArray arr, char element) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  CharArray concat(CharArray arr, char... elements) {
-		// TODO Auto-generated method stub
+		char[] result = new char[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  CharArray concat(char element, CharArray arr) {
-		// TODO Auto-generated method stub
-	}
-	
-	public static  CharArray concat(char[] elements, CharArray arr) {
-		// TODO Auto-generated method stub
+		char[] result = new char[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  CharArray concat(CharArray arr, Collection<? extends Character> elements) {
@@ -93,8 +97,6 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	public static  CharArray concat(CharArray arr, CharArray arr2) {
 		// TODO Auto-generated method stub
 	}
-	
-
 
 
 

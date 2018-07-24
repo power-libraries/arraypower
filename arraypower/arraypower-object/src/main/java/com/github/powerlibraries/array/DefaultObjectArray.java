@@ -1,5 +1,6 @@
 package com.github.powerlibraries.array;
 
+import java.nio.ObjectBuffer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -156,7 +157,7 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 	}
 	
 	@Override
-	public E remove(int index) {
+	public E removeAt(int index) {
 		rangeCheck(index);
 		E old = (E) elementData[offset+index];
 		elementData[offset+index] = null;
@@ -209,6 +210,11 @@ public class DefaultObjectArray<E> extends AbstractObjectList<E> implements Obje
 			elementData[i] = elementData[offset + length - i - 1];
 			elementData[offset + length - i - 1] = temp;
 		}
+	}
+	
+	@Override
+	public ObjectBuffer asBuffer() {
+		return ObjectBuffer.wrap(elementData, offset, length);
 	}
 	
 	private class ObjectPrimitiveIterable implements Iterable<ObjectPointer<E>> {
