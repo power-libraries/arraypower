@@ -13,6 +13,7 @@ script:
   - cd ../../arraypower-generator
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
   - mvn test -Dmaven.javadoc.skip=true -B
+  - mkdir ../tmp
   - mvn exec:java -DskipTests=true -Dmaven.javadoc.skip=true -Dexec.args="../tmp/"
   - cd ..
   - diff -qrN tmp/ arraypower/
