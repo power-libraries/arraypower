@@ -36,11 +36,6 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>arraypower-char</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>arraypower-boolean</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -52,6 +47,11 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>arraypower-double</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>arraypower-char</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

@@ -1,6 +1,6 @@
 package com.github.powerlibraries.array;
 
-import java.nio.{{t.label}}Buffer;
+{% if t.bufferSupport %}import java.nio.{{t.label}}Buffer;{% endif %}
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -226,12 +226,12 @@ public class Default{{t.label}}Array{{t.generic}} extends Abstract{{t.label}}Lis
 			elementData[offset + length - i - 1] = temp;
 		}
 	}
-	
+	{% if t.bufferSupport %}
 	@Override
 	public {{t.label}}Buffer asBuffer() {
 		return {{t.label}}Buffer.wrap(elementData, offset, length);
 	}
-	
+	{% endif %}
 	private class {{t.label}}PrimitiveIterable implements Iterable<{{t.label}}Pointer{{t.generic}}> {
 
 		private int initialPosition;

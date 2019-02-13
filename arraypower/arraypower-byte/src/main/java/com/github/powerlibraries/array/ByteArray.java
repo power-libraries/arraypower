@@ -10,20 +10,20 @@ import com.github.powerlibraries.primitive.collections.ByteList;
 public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
-	public final static ByteArray EMPTY = new DefaultByteArray(new byte[0]);
+	final static ByteArray EMPTY = new DefaultByteArray(new byte[0]);
 	
 	@SuppressWarnings("unchecked")
-	public static  ByteArray empty() {
+	static  ByteArray empty() {
 		return EMPTY;
 	}
 	
-	public static  ByteArray ofSize(int size) {
+	static  ByteArray ofSize(int size) {
 		if(size == 0)
 			return empty();
 		return new DefaultByteArray(new byte[size]);
 	}
 	
-	public static  ByteArray copy(Collection<? extends Byte> c) {
+	static  ByteArray copy(Collection<? extends Byte> c) {
 		ByteArray result = ofSize(c.size());
 		int i=0;
 		for(Byte v:c)
@@ -31,23 +31,23 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 		return result;
 	}
 	
-	public static  ByteArray copy(ByteArray arr) {
+	static  ByteArray copy(ByteArray arr) {
 		return new DefaultByteArray(arr.toByteArray());
 	}
 	
-	public static  ByteArray copy(byte[] arr) {
+	static  ByteArray copy(byte[] arr) {
 		return new DefaultByteArray(Arrays.copyOf(arr, arr.length));
 	}
 	
-	public static  ByteArray copy(byte[] arr, int offset, int length) {
+	static  ByteArray copy(byte[] arr, int offset, int length) {
 		return new DefaultByteArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
-	public static  ByteArray copy(Byte[] arr) {
+	static  ByteArray copy(Byte[] arr) {
 		return copy(arr, 0, arr.length);
 	}
 	
-	public static  ByteArray copy(Byte[] arr, int offset, int length) {
+	static  ByteArray copy(Byte[] arr, int offset, int length) {
 		byte[] copy = new byte[length];
 		for(int i=0; i < length; i++) {
 			copy[i] = arr[offset + i];
@@ -55,47 +55,70 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 		return new DefaultByteArray(copy);
 	}
 	
-	public static  ByteArray wrap(byte... arr) {
+	static  ByteArray wrap(byte... arr) {
 		return new DefaultByteArray(arr);
 	}
 	
-	public static  ByteArray wrap(ByteArray arr) {
+	static  ByteArray wrap(ByteArray arr) {
 		return new DefaultByteArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
-	public static  ByteArray wrap(byte[] arr, int offset, int length) {
+	static  ByteArray wrap(byte[] arr, int offset, int length) {
 		return new DefaultByteArray(arr, offset, length);
 	}
 
-	public static  ByteArray wrap(ByteArray arr, int offset, int lengt) {
+	static  ByteArray wrap(ByteArray arr, int offset, int lengt) {
 		//TODO all of those construcor should check for correct offset and length values
 		return new DefaultByteArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
-	public static  ByteArray concat(ByteArray arr, byte element) {
+	static  ByteArray concat(ByteArray arr, byte element) {
 		byte[] result = new byte[arr.size() + 1];
 		arr.copyTo(result);
 		result[arr.size() + 1] = element;
 		return wrap(result);
 	}
 	
-	public static  ByteArray concat(byte element, ByteArray arr) {
+	static  ByteArray concat(byte element, ByteArray arr) {
 		byte[] result = new byte[arr.size() + 1];
 		arr.copyTo(result, 1);
 		result[0] = element;
 		return wrap(result);
 	}
 	
-	public static  ByteArray concat(ByteArray arr, Collection<? extends Byte> elements) {
-		// TODO Auto-generated method stub
+	static  ByteArray concat(ByteArray arr, Collection<? extends Byte> elements) {
+		ByteArray result = ByteArray.ofSize(arr.size() + elements.size());
+		for(int i=0; i<arr.size(); i++) {
+			result.setByte(i, arr.getByte(i));
+		}
+		int index = arr.size();
+		for(byte value : elements) {
+			result.setByte(index++, value);
+		}
+		return result;
 	}
 	
-	public static  ByteArray concat(Collection<? extends Byte> elements, ByteArray arr) {
-		// TODO Auto-generated method stub
+	static  ByteArray concat(Collection<? extends Byte> elements, ByteArray arr) {
+		ByteArray result = ByteArray.ofSize(arr.size() + elements.size());
+		int index = 0;
+		for(byte value : elements) {
+			result.setByte(index++, value);
+		}
+		for(int i=0; i<arr.size(); i++) {
+			result.setByte(i + index, arr.getByte(i));
+		}
+		return result;
 	}
 	
-	public static  ByteArray concat(ByteArray arr, ByteArray arr2) {
-		// TODO Auto-generated method stub
+	static  ByteArray concat(ByteArray arr, ByteArray arr2) {
+		ByteArray result = ByteArray.ofSize(arr.size() + arr2.size());
+		for(int i=0; i<arr.size(); i++) {
+			result.setByte(i, arr.getByte(i));
+		}
+		for(int i=0; i<arr2.size(); i++) {
+			result.setByte(i + arr2.size(), arr2.getByte(i));
+		}
+		return result;
 	}
 
 
@@ -103,44 +126,59 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addByte(byte e) throws UnsupportedOperationException {
+	default boolean addByte(byte e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default void addByte(int index, byte element) throws UnsupportedOperationException {
+	default void addByte(int index, byte element) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllBytes(ByteCollection c) throws UnsupportedOperationException {
+	default boolean addAllBytes(ByteCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAll(Collection<? extends Byte> c) throws UnsupportedOperationException {
+	default boolean addAll(Collection<? extends Byte> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public default boolean addAll(int index, Collection<? extends Byte> c) throws UnsupportedOperationException {
+	default boolean addAll(int index, Collection<? extends Byte> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default ByteArray subList(int fromIndex, int toIndex) {
+	default ByteArray subList(int fromIndex, int toIndex) {
 		return ByteArray.wrap(this, fromIndex, toIndex-fromIndex);
 	}
 	
-	public default ByteArray subArray(int offset, int length) {
+	default ByteArray subArray(int offset, int length) {
 		return ByteArray.wrap(this, offset, length);
 	}
 	
-	public int binarySearch(byte key);
+	default void copyTo(byte[] other) {
+		this.copyTo(other, 0);
+	}
 	
-	public void fill(byte val);
+	default void copyTo(byte[] other, int offset) {
+		System.arraycopy(
+			getInternalArray(),
+			getInternalOffset(),
+			other,
+			offset,
+			Math.min(size(), other.length-offset) 
+		);
+	}
 	
-	public byte[] getInternalArray();
 	
-	public int getInternalOffset();
+	int binarySearch(byte key);
+	
+	void fill(byte val);
+	
+	byte[] getInternalArray();
+	
+	int getInternalOffset();
 }

@@ -10,20 +10,20 @@ import com.github.powerlibraries.primitive.collections.LongList;
 public interface LongArray extends LongList, Array<Long>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
-	public final static LongArray EMPTY = new DefaultLongArray(new long[0]);
+	final static LongArray EMPTY = new DefaultLongArray(new long[0]);
 	
 	@SuppressWarnings("unchecked")
-	public static  LongArray empty() {
+	static  LongArray empty() {
 		return EMPTY;
 	}
 	
-	public static  LongArray ofSize(int size) {
+	static  LongArray ofSize(int size) {
 		if(size == 0)
 			return empty();
 		return new DefaultLongArray(new long[size]);
 	}
 	
-	public static  LongArray copy(Collection<? extends Long> c) {
+	static  LongArray copy(Collection<? extends Long> c) {
 		LongArray result = ofSize(c.size());
 		int i=0;
 		for(Long v:c)
@@ -31,23 +31,23 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 		return result;
 	}
 	
-	public static  LongArray copy(LongArray arr) {
+	static  LongArray copy(LongArray arr) {
 		return new DefaultLongArray(arr.toLongArray());
 	}
 	
-	public static  LongArray copy(long[] arr) {
+	static  LongArray copy(long[] arr) {
 		return new DefaultLongArray(Arrays.copyOf(arr, arr.length));
 	}
 	
-	public static  LongArray copy(long[] arr, int offset, int length) {
+	static  LongArray copy(long[] arr, int offset, int length) {
 		return new DefaultLongArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
-	public static  LongArray copy(Long[] arr) {
+	static  LongArray copy(Long[] arr) {
 		return copy(arr, 0, arr.length);
 	}
 	
-	public static  LongArray copy(Long[] arr, int offset, int length) {
+	static  LongArray copy(Long[] arr, int offset, int length) {
 		long[] copy = new long[length];
 		for(int i=0; i < length; i++) {
 			copy[i] = arr[offset + i];
@@ -55,47 +55,70 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 		return new DefaultLongArray(copy);
 	}
 	
-	public static  LongArray wrap(long... arr) {
+	static  LongArray wrap(long... arr) {
 		return new DefaultLongArray(arr);
 	}
 	
-	public static  LongArray wrap(LongArray arr) {
+	static  LongArray wrap(LongArray arr) {
 		return new DefaultLongArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
-	public static  LongArray wrap(long[] arr, int offset, int length) {
+	static  LongArray wrap(long[] arr, int offset, int length) {
 		return new DefaultLongArray(arr, offset, length);
 	}
 
-	public static  LongArray wrap(LongArray arr, int offset, int lengt) {
+	static  LongArray wrap(LongArray arr, int offset, int lengt) {
 		//TODO all of those construcor should check for correct offset and length values
 		return new DefaultLongArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
-	public static  LongArray concat(LongArray arr, long element) {
+	static  LongArray concat(LongArray arr, long element) {
 		long[] result = new long[arr.size() + 1];
 		arr.copyTo(result);
 		result[arr.size() + 1] = element;
 		return wrap(result);
 	}
 	
-	public static  LongArray concat(long element, LongArray arr) {
+	static  LongArray concat(long element, LongArray arr) {
 		long[] result = new long[arr.size() + 1];
 		arr.copyTo(result, 1);
 		result[0] = element;
 		return wrap(result);
 	}
 	
-	public static  LongArray concat(LongArray arr, Collection<? extends Long> elements) {
-		// TODO Auto-generated method stub
+	static  LongArray concat(LongArray arr, Collection<? extends Long> elements) {
+		LongArray result = LongArray.ofSize(arr.size() + elements.size());
+		for(int i=0; i<arr.size(); i++) {
+			result.setLong(i, arr.getLong(i));
+		}
+		int index = arr.size();
+		for(long value : elements) {
+			result.setLong(index++, value);
+		}
+		return result;
 	}
 	
-	public static  LongArray concat(Collection<? extends Long> elements, LongArray arr) {
-		// TODO Auto-generated method stub
+	static  LongArray concat(Collection<? extends Long> elements, LongArray arr) {
+		LongArray result = LongArray.ofSize(arr.size() + elements.size());
+		int index = 0;
+		for(long value : elements) {
+			result.setLong(index++, value);
+		}
+		for(int i=0; i<arr.size(); i++) {
+			result.setLong(i + index, arr.getLong(i));
+		}
+		return result;
 	}
 	
-	public static  LongArray concat(LongArray arr, LongArray arr2) {
-		// TODO Auto-generated method stub
+	static  LongArray concat(LongArray arr, LongArray arr2) {
+		LongArray result = LongArray.ofSize(arr.size() + arr2.size());
+		for(int i=0; i<arr.size(); i++) {
+			result.setLong(i, arr.getLong(i));
+		}
+		for(int i=0; i<arr2.size(); i++) {
+			result.setLong(i + arr2.size(), arr2.getLong(i));
+		}
+		return result;
 	}
 
 
@@ -103,44 +126,59 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addLong(long e) throws UnsupportedOperationException {
+	default boolean addLong(long e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default void addLong(int index, long element) throws UnsupportedOperationException {
+	default void addLong(int index, long element) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllLongs(LongCollection c) throws UnsupportedOperationException {
+	default boolean addAllLongs(LongCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAll(Collection<? extends Long> c) throws UnsupportedOperationException {
+	default boolean addAll(Collection<? extends Long> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public default boolean addAll(int index, Collection<? extends Long> c) throws UnsupportedOperationException {
+	default boolean addAll(int index, Collection<? extends Long> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default LongArray subList(int fromIndex, int toIndex) {
+	default LongArray subList(int fromIndex, int toIndex) {
 		return LongArray.wrap(this, fromIndex, toIndex-fromIndex);
 	}
 	
-	public default LongArray subArray(int offset, int length) {
+	default LongArray subArray(int offset, int length) {
 		return LongArray.wrap(this, offset, length);
 	}
 	
-	public int binarySearch(long key);
+	default void copyTo(long[] other) {
+		this.copyTo(other, 0);
+	}
 	
-	public void fill(long val);
+	default void copyTo(long[] other, int offset) {
+		System.arraycopy(
+			getInternalArray(),
+			getInternalOffset(),
+			other,
+			offset,
+			Math.min(size(), other.length-offset) 
+		);
+	}
 	
-	public long[] getInternalArray();
 	
-	public int getInternalOffset();
+	int binarySearch(long key);
+	
+	void fill(long val);
+	
+	long[] getInternalArray();
+	
+	int getInternalOffset();
 }

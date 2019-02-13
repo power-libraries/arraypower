@@ -16,10 +16,10 @@
 		<module>arraypower-long</module>
 		<module>arraypower-short</module>
 		<module>arraypower-byte</module>
-		<module>arraypower-char</module>
 		<module>arraypower-boolean</module>
 		<module>arraypower-float</module>
 		<module>arraypower-double</module>
+		<module>arraypower-char</module>
 		<module>arraypower-primitives</module>
 		<module>arraypower-complete</module>
 		<module>arraypower-common</module>

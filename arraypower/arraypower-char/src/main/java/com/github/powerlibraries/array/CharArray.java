@@ -10,20 +10,20 @@ import com.github.powerlibraries.primitive.collections.CharList;
 public interface CharArray extends CharList, Array<Character>, RandomAccess {
 
 	@SuppressWarnings("rawtypes")
-	public final static CharArray EMPTY = new DefaultCharArray(new char[0]);
+	final static CharArray EMPTY = new DefaultCharArray(new char[0]);
 	
 	@SuppressWarnings("unchecked")
-	public static  CharArray empty() {
+	static  CharArray empty() {
 		return EMPTY;
 	}
 	
-	public static  CharArray ofSize(int size) {
+	static  CharArray ofSize(int size) {
 		if(size == 0)
 			return empty();
 		return new DefaultCharArray(new char[size]);
 	}
 	
-	public static  CharArray copy(Collection<? extends Character> c) {
+	static  CharArray copy(Collection<? extends Character> c) {
 		CharArray result = ofSize(c.size());
 		int i=0;
 		for(Character v:c)
@@ -31,23 +31,23 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 		return result;
 	}
 	
-	public static  CharArray copy(CharArray arr) {
+	static  CharArray copy(CharArray arr) {
 		return new DefaultCharArray(arr.toCharArray());
 	}
 	
-	public static  CharArray copy(char[] arr) {
+	static  CharArray copy(char[] arr) {
 		return new DefaultCharArray(Arrays.copyOf(arr, arr.length));
 	}
 	
-	public static  CharArray copy(char[] arr, int offset, int length) {
+	static  CharArray copy(char[] arr, int offset, int length) {
 		return new DefaultCharArray(Arrays.copyOfRange(arr, offset, offset + length));
 	}
 	
-	public static  CharArray copy(Character[] arr) {
+	static  CharArray copy(Character[] arr) {
 		return copy(arr, 0, arr.length);
 	}
 	
-	public static  CharArray copy(Character[] arr, int offset, int length) {
+	static  CharArray copy(Character[] arr, int offset, int length) {
 		char[] copy = new char[length];
 		for(int i=0; i < length; i++) {
 			copy[i] = arr[offset + i];
@@ -55,47 +55,70 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 		return new DefaultCharArray(copy);
 	}
 	
-	public static  CharArray wrap(char... arr) {
+	static  CharArray wrap(char... arr) {
 		return new DefaultCharArray(arr);
 	}
 	
-	public static  CharArray wrap(CharArray arr) {
+	static  CharArray wrap(CharArray arr) {
 		return new DefaultCharArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
-	public static  CharArray wrap(char[] arr, int offset, int length) {
+	static  CharArray wrap(char[] arr, int offset, int length) {
 		return new DefaultCharArray(arr, offset, length);
 	}
 
-	public static  CharArray wrap(CharArray arr, int offset, int lengt) {
+	static  CharArray wrap(CharArray arr, int offset, int lengt) {
 		//TODO all of those construcor should check for correct offset and length values
 		return new DefaultCharArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
-	public static  CharArray concat(CharArray arr, char element) {
+	static  CharArray concat(CharArray arr, char element) {
 		char[] result = new char[arr.size() + 1];
 		arr.copyTo(result);
 		result[arr.size() + 1] = element;
 		return wrap(result);
 	}
 	
-	public static  CharArray concat(char element, CharArray arr) {
+	static  CharArray concat(char element, CharArray arr) {
 		char[] result = new char[arr.size() + 1];
 		arr.copyTo(result, 1);
 		result[0] = element;
 		return wrap(result);
 	}
 	
-	public static  CharArray concat(CharArray arr, Collection<? extends Character> elements) {
-		// TODO Auto-generated method stub
+	static  CharArray concat(CharArray arr, Collection<? extends Character> elements) {
+		CharArray result = CharArray.ofSize(arr.size() + elements.size());
+		for(int i=0; i<arr.size(); i++) {
+			result.setChar(i, arr.getChar(i));
+		}
+		int index = arr.size();
+		for(char value : elements) {
+			result.setChar(index++, value);
+		}
+		return result;
 	}
 	
-	public static  CharArray concat(Collection<? extends Character> elements, CharArray arr) {
-		// TODO Auto-generated method stub
+	static  CharArray concat(Collection<? extends Character> elements, CharArray arr) {
+		CharArray result = CharArray.ofSize(arr.size() + elements.size());
+		int index = 0;
+		for(char value : elements) {
+			result.setChar(index++, value);
+		}
+		for(int i=0; i<arr.size(); i++) {
+			result.setChar(i + index, arr.getChar(i));
+		}
+		return result;
 	}
 	
-	public static  CharArray concat(CharArray arr, CharArray arr2) {
-		// TODO Auto-generated method stub
+	static  CharArray concat(CharArray arr, CharArray arr2) {
+		CharArray result = CharArray.ofSize(arr.size() + arr2.size());
+		for(int i=0; i<arr.size(); i++) {
+			result.setChar(i, arr.getChar(i));
+		}
+		for(int i=0; i<arr2.size(); i++) {
+			result.setChar(i + arr2.size(), arr2.getChar(i));
+		}
+		return result;
 	}
 
 
@@ -103,44 +126,59 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	//Interface methods
 	
 	@Override
-	public default boolean addChar(char e) throws UnsupportedOperationException {
+	default boolean addChar(char e) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default void addChar(int index, char element) throws UnsupportedOperationException {
+	default void addChar(int index, char element) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAllChars(CharCollection c) throws UnsupportedOperationException {
+	default boolean addAllChars(CharCollection c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default boolean addAll(Collection<? extends Character> c) throws UnsupportedOperationException {
+	default boolean addAll(Collection<? extends Character> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public default boolean addAll(int index, Collection<? extends Character> c) throws UnsupportedOperationException {
+	default boolean addAll(int index, Collection<? extends Character> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public default CharArray subList(int fromIndex, int toIndex) {
+	default CharArray subList(int fromIndex, int toIndex) {
 		return CharArray.wrap(this, fromIndex, toIndex-fromIndex);
 	}
 	
-	public default CharArray subArray(int offset, int length) {
+	default CharArray subArray(int offset, int length) {
 		return CharArray.wrap(this, offset, length);
 	}
 	
-	public int binarySearch(char key);
+	default void copyTo(char[] other) {
+		this.copyTo(other, 0);
+	}
 	
-	public void fill(char val);
+	default void copyTo(char[] other, int offset) {
+		System.arraycopy(
+			getInternalArray(),
+			getInternalOffset(),
+			other,
+			offset,
+			Math.min(size(), other.length-offset) 
+		);
+	}
 	
-	public char[] getInternalArray();
 	
-	public int getInternalOffset();
+	int binarySearch(char key);
+	
+	void fill(char val);
+	
+	char[] getInternalArray();
+	
+	int getInternalOffset();
 }

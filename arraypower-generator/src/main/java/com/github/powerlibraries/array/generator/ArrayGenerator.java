@@ -3,7 +3,7 @@ package com.github.powerlibraries.array.generator;
 import java.io.File;
 import java.io.IOException;
 
-public class Generator {
+public class ArrayGenerator {
 
 	public static void main(String[] args) throws IOException {
 		File targetDirectory;

@@ -102,7 +102,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 		boolean changed = false;
 		for(int i=offset; i<offset+length; i++) {
 			if(!c.contains(elementData[i])) {
-				elementData[i] = 0;
+				elementData[i] = ((byte)0);
 				changed = true;
 			}
 		}
@@ -111,13 +111,13 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 
 	@Override
 	public void clear() {
-		fill(0);
+		fill(((byte)0));
 	}
 	
 	@Override
 	public void fill(byte value) {
 		for(int i=offset; i<offset+length; i++) {
-			elementData[i] = 0;
+			elementData[i] = ((byte)0);
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	public byte removeAt(int index) {
 		rangeCheck(index);
 		byte old = elementData[offset+index];
-		elementData[offset+index] = 0;
+		elementData[offset+index] = ((byte)0);
 		return old;
 	}
 
@@ -193,7 +193,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	public boolean removeByte(byte o) {
 		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
-				elementData[i] = 0;
+				elementData[i] = ((byte)0);
 				return true;
 			}
 		}
