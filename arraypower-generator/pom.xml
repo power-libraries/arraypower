@@ -39,7 +39,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.6.0</version>
 				<configuration>
-					<mainClass>com.github.powerlibraries.array.generator.Generator</mainClass>
+					<mainClass>com.github.powerlibraries.array.generator.ArrayGenerator</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
