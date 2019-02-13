@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractFloatList;
-import com.github.powerlibraries.primitive.collections.FloatCollection;
+import com.github.powerlibraries.primitive.collections.FloatListIterator;
+import com.github.powerlibraries.primitive.common.DefaultFloatPointer;
 import com.github.powerlibraries.primitive.common.FloatPointer;
 
 public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
@@ -28,22 +27,23 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public float getFloat(int index) {
@@ -57,11 +57,6 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 		float old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addFloat(int index, float element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Float> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Float> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 	
 	@Override
-	public Float remove(int index) {
+	public float removeAt(int index) {
 		rangeCheck(index);
 		float old = elementData[offset+index];
 		elementData[offset+index] = 0f;
@@ -206,7 +191,7 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	
 	@Override
 	public boolean removeFloat(float o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0f;
 				return true;
@@ -216,12 +201,66 @@ public class DefaultFloatArray extends AbstractFloatList implements FloatArray {
 	}
 	
 	@Override
-	public ListIterator<Float> listIterator(int index) {
-		return new ArrayIterator<Float>(this, index);
+	public FloatListIterator listIterator(int index) {
+		return new FloatArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<FloatPointer> primitiveIterable(int index) {
-		return new FloatPrimitiveIterable(this, index);
+		return new FloatPrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			float temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public FloatBuffer asBuffer() {
+		return FloatBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class FloatPrimitiveIterable implements Iterable<FloatPointer> {
+
+		private int initialPosition;
+
+		public FloatPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<FloatPointer> iterator() {
+			return new FloatPointerIterator(initialPosition);
+		}
+	}
+	
+	private class FloatPointerIterator implements Iterator<FloatPointer> {
+
+		private int position;
+		private DefaultFloatPointer pointer;
+		
+		public FloatPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultFloatPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public FloatPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getFloat(position));
+			return pointer;
+		}
+		
 	}
 }

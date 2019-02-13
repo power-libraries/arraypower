@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.BooleanBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractBooleanList;
-import com.github.powerlibraries.primitive.collections.BooleanCollection;
+import com.github.powerlibraries.primitive.collections.BooleanListIterator;
+import com.github.powerlibraries.primitive.common.DefaultBooleanPointer;
 import com.github.powerlibraries.primitive.common.BooleanPointer;
 
 public class DefaultBooleanArray extends AbstractBooleanList implements BooleanArray {
@@ -28,22 +27,23 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public boolean getBoolean(int index) {
@@ -57,11 +57,6 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 		boolean old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addBoolean(int index, boolean element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Boolean> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Boolean> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -164,7 +149,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 	
 	@Override
-	public Boolean remove(int index) {
+	public boolean removeAt(int index) {
 		rangeCheck(index);
 		boolean old = elementData[offset+index];
 		elementData[offset+index] = false;
@@ -191,7 +176,7 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	
 	@Override
 	public boolean removeBoolean(boolean o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = false;
 				return true;
@@ -201,12 +186,66 @@ public class DefaultBooleanArray extends AbstractBooleanList implements BooleanA
 	}
 	
 	@Override
-	public ListIterator<Boolean> listIterator(int index) {
-		return new ArrayIterator<Boolean>(this, index);
+	public BooleanListIterator listIterator(int index) {
+		return new BooleanArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<BooleanPointer> primitiveIterable(int index) {
-		return new BooleanPrimitiveIterable(this, index);
+		return new BooleanPrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			boolean temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public BooleanBuffer asBuffer() {
+		return BooleanBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class BooleanPrimitiveIterable implements Iterable<BooleanPointer> {
+
+		private int initialPosition;
+
+		public BooleanPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<BooleanPointer> iterator() {
+			return new BooleanPointerIterator(initialPosition);
+		}
+	}
+	
+	private class BooleanPointerIterator implements Iterator<BooleanPointer> {
+
+		private int position;
+		private DefaultBooleanPointer pointer;
+		
+		public BooleanPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultBooleanPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public BooleanPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getBoolean(position));
+			return pointer;
+		}
+		
 	}
 }

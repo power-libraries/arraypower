@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.DoubleBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractDoubleList;
-import com.github.powerlibraries.primitive.collections.DoubleCollection;
+import com.github.powerlibraries.primitive.collections.DoubleListIterator;
+import com.github.powerlibraries.primitive.common.DefaultDoublePointer;
 import com.github.powerlibraries.primitive.common.DoublePointer;
 
 public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArray {
@@ -28,22 +27,23 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public double getDouble(int index) {
@@ -57,11 +57,6 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 		double old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addDouble(int index, double element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Double> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Double> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 	
 	@Override
-	public Double remove(int index) {
+	public double removeAt(int index) {
 		rangeCheck(index);
 		double old = elementData[offset+index];
 		elementData[offset+index] = 0d;
@@ -206,7 +191,7 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	
 	@Override
 	public boolean removeDouble(double o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0d;
 				return true;
@@ -216,12 +201,66 @@ public class DefaultDoubleArray extends AbstractDoubleList implements DoubleArra
 	}
 	
 	@Override
-	public ListIterator<Double> listIterator(int index) {
-		return new ArrayIterator<Double>(this, index);
+	public DoubleListIterator listIterator(int index) {
+		return new DoubleArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<DoublePointer> primitiveIterable(int index) {
-		return new DoublePrimitiveIterable(this, index);
+		return new DoublePrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			double temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public DoubleBuffer asBuffer() {
+		return DoubleBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class DoublePrimitiveIterable implements Iterable<DoublePointer> {
+
+		private int initialPosition;
+
+		public DoublePrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<DoublePointer> iterator() {
+			return new DoublePointerIterator(initialPosition);
+		}
+	}
+	
+	private class DoublePointerIterator implements Iterator<DoublePointer> {
+
+		private int position;
+		private DefaultDoublePointer pointer;
+		
+		public DoublePointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultDoublePointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public DoublePointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getDouble(position));
+			return pointer;
+		}
+		
 	}
 }

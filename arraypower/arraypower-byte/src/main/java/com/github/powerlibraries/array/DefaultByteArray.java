@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractByteList;
-import com.github.powerlibraries.primitive.collections.ByteCollection;
+import com.github.powerlibraries.primitive.collections.ByteListIterator;
+import com.github.powerlibraries.primitive.common.DefaultBytePointer;
 import com.github.powerlibraries.primitive.common.BytePointer;
 
 public class DefaultByteArray extends AbstractByteList implements ByteArray {
@@ -28,22 +27,23 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public byte getByte(int index) {
@@ -57,11 +57,6 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 		byte old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addByte(int index, byte element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Byte> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Byte> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	}
 	
 	@Override
-	public Byte remove(int index) {
+	public byte removeAt(int index) {
 		rangeCheck(index);
 		byte old = elementData[offset+index];
 		elementData[offset+index] = 0;
@@ -206,7 +191,7 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	
 	@Override
 	public boolean removeByte(byte o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0;
 				return true;
@@ -216,12 +201,66 @@ public class DefaultByteArray extends AbstractByteList implements ByteArray {
 	}
 	
 	@Override
-	public ListIterator<Byte> listIterator(int index) {
-		return new ArrayIterator<Byte>(this, index);
+	public ByteListIterator listIterator(int index) {
+		return new ByteArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<BytePointer> primitiveIterable(int index) {
-		return new BytePrimitiveIterable(this, index);
+		return new BytePrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			byte temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public ByteBuffer asBuffer() {
+		return ByteBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class BytePrimitiveIterable implements Iterable<BytePointer> {
+
+		private int initialPosition;
+
+		public BytePrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<BytePointer> iterator() {
+			return new BytePointerIterator(initialPosition);
+		}
+	}
+	
+	private class BytePointerIterator implements Iterator<BytePointer> {
+
+		private int position;
+		private DefaultBytePointer pointer;
+		
+		public BytePointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultBytePointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public BytePointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getByte(position));
+			return pointer;
+		}
+		
 	}
 }

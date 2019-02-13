@@ -2,11 +2,7 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.CharCollection;
 import com.github.powerlibraries.primitive.collections.CharList;
@@ -40,70 +36,66 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	}
 	
 	public static  CharArray copy(char[] arr) {
-		...
-	}
-	
-	public static  CharArray copy(Character[] arr) {
-		...
-	}
-	
-	public static  CharArray copy(Character[] arr, int offset, int length) {
-		...
-	}
-	
-	public static  CharArray wrap(char[] arr) {
-		...
-	}
-	
-	public static  CharArray wrap(CharArray arr) {
-		...
+		return new DefaultCharArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  CharArray copy(char[] arr, int offset, int length) {
-		...
+		return new DefaultCharArray(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static  CharArray copy(Character[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static  CharArray copy(Character[] arr, int offset, int length) {
+		char[] copy = new char[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultCharArray(copy);
+	}
+	
+	public static  CharArray wrap(char... arr) {
+		return new DefaultCharArray(arr);
+	}
+	
+	public static  CharArray wrap(CharArray arr) {
+		return new DefaultCharArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  CharArray wrap(char[] arr, int offset, int length) {
-		...
+		return new DefaultCharArray(arr, offset, length);
 	}
-	
+
 	public static  CharArray wrap(CharArray arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultCharArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  CharArray concat(CharArray arr, char element) {
-		...
-	}
-	
-	public static  CharArray concat(CharArray arr, char... elements) {
-		...
+		char[] result = new char[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  CharArray concat(char element, CharArray arr) {
-		...
-	}
-	
-	public static  CharArray concat(char[] elements, CharArray arr) {
-		...
+		char[] result = new char[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  CharArray concat(CharArray arr, Collection<? extends Character> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(Collection<? extends Character> elements, CharArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  CharArray concat(CharArray arr, CharArray arr2) {
-		...
-	}
-	
-	public static  CharArray reverse(CharArray arr) {
-		char[] a = new char[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getChar(arr.size()-i-1);
-		return new DefaultCharArray(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -116,7 +108,22 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	}
 	
 	@Override
+	public default void addChar(int index, char element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllChars(CharCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Character> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Character> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -128,7 +135,6 @@ public interface CharArray extends CharList, Array<Character>, RandomAccess {
 	public default CharArray subArray(int offset, int length) {
 		return CharArray.wrap(this, offset, length);
 	}
-	
 	
 	public int binarySearch(char key);
 	

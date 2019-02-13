@@ -2,14 +2,10 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-{% if t.primitive %}
-{% else %}
+{% if t.primitive %}{% else %}
 import java.util.Comparator;
 {% endif %}
-
 import com.github.powerlibraries.primitive.collections.{{t.label}}Collection;
 import com.github.powerlibraries.primitive.collections.{{t.label}}List;
 
@@ -42,70 +38,66 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.type}}[] arr) {
-		...
-	}
-	{% if t.primitive %}
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.boxed}}[] arr) {
-		...
-	}
-	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.boxed}}[] arr, int offset, int length) {
-		...
-	}
-	{% endif %}
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.arrayType}}[] arr) {
-		...
-	}
-	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.label}}Array{{t.extendedGeneric}} arr) {
-		...
+		return new Default{{t.label}}Array{{t.generic}}(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.type}}[] arr, int offset, int length) {
-		...
+		return new Default{{t.label}}Array{{t.generic}}(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	{% if t.primitive %}
+	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.boxed}}[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static {{t.generic}} {{t.label}}Array{{t.generic}} copy({{t.boxed}}[] arr, int offset, int length) {
+		{{t.type}}[] copy = new {{t.type}}[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new Default{{t.label}}Array{{t.generic}}(copy);
+	}
+	{% endif %}
+	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.arrayType}}... arr) {
+		return new Default{{t.label}}Array{{t.generic}}(arr);
+	}
+	
+	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.label}}Array{{t.extendedGeneric}} arr) {
+		return new Default{{t.label}}Array{{t.generic}}(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.arrayType}}[] arr, int offset, int length) {
-		...
+		return new Default{{t.label}}Array{{t.generic}}(arr, offset, length);
 	}
-	
+
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} wrap({{t.label}}Array{{t.extendedGeneric}} arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new Default{{t.label}}Array{{t.generic}}(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat({{t.label}}Array{{t.extendedGeneric}} arr, {{t.type}} element) {
-		...
-	}
-	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat({{t.label}}Array{{t.extendedGeneric}} arr, {{t.type}}... elements) {
-		...
+		{{t.arrayType}}[] result = new {{t.arrayType}}[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat({{t.type}} element, {{t.label}}Array{{t.extendedGeneric}} arr) {
-		...
-	}
-	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat({{t.type}}[] elements, {{t.label}}Array{{t.extendedGeneric}} arr) {
-		...
+		{{t.arrayType}}[] result = new {{t.arrayType}}[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat({{t.label}}Array{{t.extendedGeneric}} arr, Collection<? extends {{t.boxed}}> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat(Collection<? extends {{t.boxed}}> elements, {{t.label}}Array{{t.extendedGeneric}} arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static {{t.generic}} {{t.label}}Array{{t.generic}} concat({{t.label}}Array{{t.extendedGeneric}} arr, {{t.label}}Array{{t.extendedGeneric}} arr2) {
-		...
-	}
-	
-	public static {{t.generic}} {{t.label}}Array{{t.generic}} reverse({{t.label}}Array{{t.extendedGeneric}} arr) {
-		{{t.arrayType}}[] a = new {{t.arrayType}}[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.get{{t.label}}(arr.size()-i-1);
-		return new Default{{t.label}}Array{{t.generic}}(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -118,7 +110,22 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 	}
 	
 	@Override
+	public default void add{{t.label}}(int index, {{t.type}} element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAll{{t.label}}s({{t.label}}Collection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends {{t.boxed}}> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -131,7 +138,6 @@ public interface {{t.label}}Array{{t.generic}} extends {{t.label}}List{{t.generi
 		return {{t.label}}Array.wrap(this, offset, length);
 	}
 	{% if t.numeric %}
-	
 	public int binarySearch({{t.type}} key);
 	{% elseif not (t.primitive) %}
 	public int binarySearch({{t.type}} key, Comparator<{{t.boxed}}> comp);

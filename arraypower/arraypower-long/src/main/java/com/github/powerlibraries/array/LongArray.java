@@ -2,11 +2,7 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.LongCollection;
 import com.github.powerlibraries.primitive.collections.LongList;
@@ -40,70 +36,66 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	}
 	
 	public static  LongArray copy(long[] arr) {
-		...
-	}
-	
-	public static  LongArray copy(Long[] arr) {
-		...
-	}
-	
-	public static  LongArray copy(Long[] arr, int offset, int length) {
-		...
-	}
-	
-	public static  LongArray wrap(long[] arr) {
-		...
-	}
-	
-	public static  LongArray wrap(LongArray arr) {
-		...
+		return new DefaultLongArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  LongArray copy(long[] arr, int offset, int length) {
-		...
+		return new DefaultLongArray(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static  LongArray copy(Long[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static  LongArray copy(Long[] arr, int offset, int length) {
+		long[] copy = new long[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultLongArray(copy);
+	}
+	
+	public static  LongArray wrap(long... arr) {
+		return new DefaultLongArray(arr);
+	}
+	
+	public static  LongArray wrap(LongArray arr) {
+		return new DefaultLongArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  LongArray wrap(long[] arr, int offset, int length) {
-		...
+		return new DefaultLongArray(arr, offset, length);
 	}
-	
+
 	public static  LongArray wrap(LongArray arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultLongArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  LongArray concat(LongArray arr, long element) {
-		...
-	}
-	
-	public static  LongArray concat(LongArray arr, long... elements) {
-		...
+		long[] result = new long[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  LongArray concat(long element, LongArray arr) {
-		...
-	}
-	
-	public static  LongArray concat(long[] elements, LongArray arr) {
-		...
+		long[] result = new long[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  LongArray concat(LongArray arr, Collection<? extends Long> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(Collection<? extends Long> elements, LongArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  LongArray concat(LongArray arr, LongArray arr2) {
-		...
-	}
-	
-	public static  LongArray reverse(LongArray arr) {
-		long[] a = new long[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getLong(arr.size()-i-1);
-		return new DefaultLongArray(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -116,7 +108,22 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	}
 	
 	@Override
+	public default void addLong(int index, long element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllLongs(LongCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Long> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Long> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -128,7 +135,6 @@ public interface LongArray extends LongList, Array<Long>, RandomAccess {
 	public default LongArray subArray(int offset, int length) {
 		return LongArray.wrap(this, offset, length);
 	}
-	
 	
 	public int binarySearch(long key);
 	

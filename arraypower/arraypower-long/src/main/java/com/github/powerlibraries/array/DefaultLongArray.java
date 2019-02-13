@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.LongBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractLongList;
-import com.github.powerlibraries.primitive.collections.LongCollection;
+import com.github.powerlibraries.primitive.collections.LongListIterator;
+import com.github.powerlibraries.primitive.common.DefaultLongPointer;
 import com.github.powerlibraries.primitive.common.LongPointer;
 
 public class DefaultLongArray extends AbstractLongList implements LongArray {
@@ -28,22 +27,23 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public long getLong(int index) {
@@ -57,11 +57,6 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 		long old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addLong(int index, long element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Long> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Long> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	}
 	
 	@Override
-	public Long remove(int index) {
+	public long removeAt(int index) {
 		rangeCheck(index);
 		long old = elementData[offset+index];
 		elementData[offset+index] = 0L;
@@ -206,7 +191,7 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	
 	@Override
 	public boolean removeLong(long o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0L;
 				return true;
@@ -216,12 +201,66 @@ public class DefaultLongArray extends AbstractLongList implements LongArray {
 	}
 	
 	@Override
-	public ListIterator<Long> listIterator(int index) {
-		return new ArrayIterator<Long>(this, index);
+	public LongListIterator listIterator(int index) {
+		return new LongArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<LongPointer> primitiveIterable(int index) {
-		return new LongPrimitiveIterable(this, index);
+		return new LongPrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			long temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public LongBuffer asBuffer() {
+		return LongBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class LongPrimitiveIterable implements Iterable<LongPointer> {
+
+		private int initialPosition;
+
+		public LongPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<LongPointer> iterator() {
+			return new LongPointerIterator(initialPosition);
+		}
+	}
+	
+	private class LongPointerIterator implements Iterator<LongPointer> {
+
+		private int position;
+		private DefaultLongPointer pointer;
+		
+		public LongPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultLongPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public LongPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getLong(position));
+			return pointer;
+		}
+		
 	}
 }

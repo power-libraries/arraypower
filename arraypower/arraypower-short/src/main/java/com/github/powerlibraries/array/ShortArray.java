@@ -2,11 +2,7 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.ShortCollection;
 import com.github.powerlibraries.primitive.collections.ShortList;
@@ -40,70 +36,66 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	}
 	
 	public static  ShortArray copy(short[] arr) {
-		...
-	}
-	
-	public static  ShortArray copy(Short[] arr) {
-		...
-	}
-	
-	public static  ShortArray copy(Short[] arr, int offset, int length) {
-		...
-	}
-	
-	public static  ShortArray wrap(short[] arr) {
-		...
-	}
-	
-	public static  ShortArray wrap(ShortArray arr) {
-		...
+		return new DefaultShortArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  ShortArray copy(short[] arr, int offset, int length) {
-		...
+		return new DefaultShortArray(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static  ShortArray copy(Short[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static  ShortArray copy(Short[] arr, int offset, int length) {
+		short[] copy = new short[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultShortArray(copy);
+	}
+	
+	public static  ShortArray wrap(short... arr) {
+		return new DefaultShortArray(arr);
+	}
+	
+	public static  ShortArray wrap(ShortArray arr) {
+		return new DefaultShortArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ShortArray wrap(short[] arr, int offset, int length) {
-		...
+		return new DefaultShortArray(arr, offset, length);
 	}
-	
+
 	public static  ShortArray wrap(ShortArray arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultShortArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ShortArray concat(ShortArray arr, short element) {
-		...
-	}
-	
-	public static  ShortArray concat(ShortArray arr, short... elements) {
-		...
+		short[] result = new short[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  ShortArray concat(short element, ShortArray arr) {
-		...
-	}
-	
-	public static  ShortArray concat(short[] elements, ShortArray arr) {
-		...
+		short[] result = new short[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  ShortArray concat(ShortArray arr, Collection<? extends Short> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(Collection<? extends Short> elements, ShortArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ShortArray concat(ShortArray arr, ShortArray arr2) {
-		...
-	}
-	
-	public static  ShortArray reverse(ShortArray arr) {
-		short[] a = new short[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getShort(arr.size()-i-1);
-		return new DefaultShortArray(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -116,7 +108,22 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	}
 	
 	@Override
+	public default void addShort(int index, short element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllShorts(ShortCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Short> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Short> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -128,7 +135,6 @@ public interface ShortArray extends ShortList, Array<Short>, RandomAccess {
 	public default ShortArray subArray(int offset, int length) {
 		return ShortArray.wrap(this, offset, length);
 	}
-	
 	
 	public int binarySearch(short key);
 	

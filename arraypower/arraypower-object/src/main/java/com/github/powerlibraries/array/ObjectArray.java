@@ -2,12 +2,9 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
 
 import java.util.Comparator;
-
 
 import com.github.powerlibraries.primitive.collections.ObjectCollection;
 import com.github.powerlibraries.primitive.collections.ObjectList;
@@ -41,62 +38,54 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	}
 	
 	public static <E> ObjectArray<E> copy(E[] arr) {
-		...
-	}
-	
-	public static <E> ObjectArray<E> wrap(Object[] arr) {
-		...
-	}
-	
-	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr) {
-		...
+		return new DefaultObjectArray<E>(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static <E> ObjectArray<E> copy(E[] arr, int offset, int length) {
-		...
+		return new DefaultObjectArray<E>(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static <E> ObjectArray<E> wrap(Object... arr) {
+		return new DefaultObjectArray<E>(arr);
+	}
+	
+	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr) {
+		return new DefaultObjectArray<E>(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static <E> ObjectArray<E> wrap(Object[] arr, int offset, int length) {
-		...
+		return new DefaultObjectArray<E>(arr, offset, length);
 	}
-	
+
 	public static <E> ObjectArray<E> wrap(ObjectArray<? extends E> arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultObjectArray<E>(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, E element) {
-		...
-	}
-	
-	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, E... elements) {
-		...
+		Object[] result = new Object[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static <E> ObjectArray<E> concat(E element, ObjectArray<? extends E> arr) {
-		...
-	}
-	
-	public static <E> ObjectArray<E> concat(E[] elements, ObjectArray<? extends E> arr) {
-		...
+		Object[] result = new Object[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, Collection<? extends E> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(Collection<? extends E> elements, ObjectArray<? extends E> arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static <E> ObjectArray<E> concat(ObjectArray<? extends E> arr, ObjectArray<? extends E> arr2) {
-		...
-	}
-	
-	public static <E> ObjectArray<E> reverse(ObjectArray<? extends E> arr) {
-		Object[] a = new Object[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getObject(arr.size()-i-1);
-		return new DefaultObjectArray<E>(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -109,7 +98,22 @@ public interface ObjectArray<E> extends ObjectList<E>, Array<E>, RandomAccess {
 	}
 	
 	@Override
+	public default void addObject(int index, E element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllObjects(ObjectCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends E> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends E> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

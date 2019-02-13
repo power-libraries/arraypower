@@ -2,11 +2,7 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.BooleanCollection;
 import com.github.powerlibraries.primitive.collections.BooleanList;
@@ -40,70 +36,66 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	}
 	
 	public static  BooleanArray copy(boolean[] arr) {
-		...
-	}
-	
-	public static  BooleanArray copy(Boolean[] arr) {
-		...
-	}
-	
-	public static  BooleanArray copy(Boolean[] arr, int offset, int length) {
-		...
-	}
-	
-	public static  BooleanArray wrap(boolean[] arr) {
-		...
-	}
-	
-	public static  BooleanArray wrap(BooleanArray arr) {
-		...
+		return new DefaultBooleanArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  BooleanArray copy(boolean[] arr, int offset, int length) {
-		...
+		return new DefaultBooleanArray(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static  BooleanArray copy(Boolean[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static  BooleanArray copy(Boolean[] arr, int offset, int length) {
+		boolean[] copy = new boolean[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultBooleanArray(copy);
+	}
+	
+	public static  BooleanArray wrap(boolean... arr) {
+		return new DefaultBooleanArray(arr);
+	}
+	
+	public static  BooleanArray wrap(BooleanArray arr) {
+		return new DefaultBooleanArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  BooleanArray wrap(boolean[] arr, int offset, int length) {
-		...
+		return new DefaultBooleanArray(arr, offset, length);
 	}
-	
+
 	public static  BooleanArray wrap(BooleanArray arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultBooleanArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, boolean element) {
-		...
-	}
-	
-	public static  BooleanArray concat(BooleanArray arr, boolean... elements) {
-		...
+		boolean[] result = new boolean[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  BooleanArray concat(boolean element, BooleanArray arr) {
-		...
-	}
-	
-	public static  BooleanArray concat(boolean[] elements, BooleanArray arr) {
-		...
+		boolean[] result = new boolean[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, Collection<? extends Boolean> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(Collection<? extends Boolean> elements, BooleanArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  BooleanArray concat(BooleanArray arr, BooleanArray arr2) {
-		...
-	}
-	
-	public static  BooleanArray reverse(BooleanArray arr) {
-		boolean[] a = new boolean[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getBoolean(arr.size()-i-1);
-		return new DefaultBooleanArray(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -116,7 +108,22 @@ public interface BooleanArray extends BooleanList, Array<Boolean>, RandomAccess 
 	}
 	
 	@Override
+	public default void addBoolean(int index, boolean element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllBooleans(BooleanCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Boolean> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Boolean> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	

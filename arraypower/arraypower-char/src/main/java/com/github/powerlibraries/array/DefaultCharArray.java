@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractCharList;
-import com.github.powerlibraries.primitive.collections.CharCollection;
+import com.github.powerlibraries.primitive.collections.CharListIterator;
+import com.github.powerlibraries.primitive.common.DefaultCharPointer;
 import com.github.powerlibraries.primitive.common.CharPointer;
 
 public class DefaultCharArray extends AbstractCharList implements CharArray {
@@ -28,22 +27,23 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public char getChar(int index) {
@@ -57,11 +57,6 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 		char old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addChar(int index, char element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Character> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Character> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 	
 	@Override
-	public Character remove(int index) {
+	public char removeAt(int index) {
 		rangeCheck(index);
 		char old = elementData[offset+index];
 		elementData[offset+index] = '\u0000';
@@ -206,7 +191,7 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	
 	@Override
 	public boolean removeChar(char o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = '\u0000';
 				return true;
@@ -216,12 +201,66 @@ public class DefaultCharArray extends AbstractCharList implements CharArray {
 	}
 	
 	@Override
-	public ListIterator<Character> listIterator(int index) {
-		return new ArrayIterator<Character>(this, index);
+	public CharListIterator listIterator(int index) {
+		return new CharArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<CharPointer> primitiveIterable(int index) {
-		return new CharPrimitiveIterable(this, index);
+		return new CharPrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			char temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public CharBuffer asBuffer() {
+		return CharBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class CharPrimitiveIterable implements Iterable<CharPointer> {
+
+		private int initialPosition;
+
+		public CharPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<CharPointer> iterator() {
+			return new CharPointerIterator(initialPosition);
+		}
+	}
+	
+	private class CharPointerIterator implements Iterator<CharPointer> {
+
+		private int position;
+		private DefaultCharPointer pointer;
+		
+		public CharPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultCharPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public CharPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getChar(position));
+			return pointer;
+		}
+		
 	}
 }

@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractIntList;
-import com.github.powerlibraries.primitive.collections.IntCollection;
+import com.github.powerlibraries.primitive.collections.IntListIterator;
+import com.github.powerlibraries.primitive.common.DefaultIntPointer;
 import com.github.powerlibraries.primitive.common.IntPointer;
 
 public class DefaultIntArray extends AbstractIntList implements IntArray {
@@ -28,22 +27,23 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public int getInt(int index) {
@@ -57,11 +57,6 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 		int old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addInt(int index, int element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Integer> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Integer> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 	
 	@Override
-	public Integer remove(int index) {
+	public int removeAt(int index) {
 		rangeCheck(index);
 		int old = elementData[offset+index];
 		elementData[offset+index] = 0;
@@ -206,7 +191,7 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	
 	@Override
 	public boolean removeInt(int o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = 0;
 				return true;
@@ -216,12 +201,66 @@ public class DefaultIntArray extends AbstractIntList implements IntArray {
 	}
 	
 	@Override
-	public ListIterator<Integer> listIterator(int index) {
-		return new ArrayIterator<Integer>(this, index);
+	public IntListIterator listIterator(int index) {
+		return new IntArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<IntPointer> primitiveIterable(int index) {
-		return new IntPrimitiveIterable(this, index);
+		return new IntPrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			int temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public IntBuffer asBuffer() {
+		return IntBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class IntPrimitiveIterable implements Iterable<IntPointer> {
+
+		private int initialPosition;
+
+		public IntPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<IntPointer> iterator() {
+			return new IntPointerIterator(initialPosition);
+		}
+	}
+	
+	private class IntPointerIterator implements Iterator<IntPointer> {
+
+		private int position;
+		private DefaultIntPointer pointer;
+		
+		public IntPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultIntPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public IntPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getInt(position));
+			return pointer;
+		}
+		
 	}
 }

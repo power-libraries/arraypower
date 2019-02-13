@@ -1,14 +1,13 @@
 package com.github.powerlibraries.array;
 
+import java.nio.ShortBuffer;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.RandomAccess;
+import java.util.Iterator;
 
 import com.github.powerlibraries.primitive.collections.AbstractShortList;
-import com.github.powerlibraries.primitive.collections.ShortCollection;
+import com.github.powerlibraries.primitive.collections.ShortListIterator;
+import com.github.powerlibraries.primitive.common.DefaultShortPointer;
 import com.github.powerlibraries.primitive.common.ShortPointer;
 
 public class DefaultShortArray extends AbstractShortList implements ShortArray {
@@ -28,22 +27,23 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 
 	/**
-     * Checks if the given index is in range.  If not, throws an appropriate
-     * runtime exception.
-     */
-    private void rangeCheck(int index) {
-        if (index >= length || index < 0)
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
+	 * Checks if the given index is in range.  If not, throws an appropriate
+	 * runtime exception.
+	 */
+	private void rangeCheck(int index) {
+		if (index >= length || index < 0) {
+			throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+		}
+	}
 
-    /**
-     * Constructs an IndexOutOfBoundsException detail message.
-     * Of the many possible refactorings of the error handling code,
-     * this "outlining" performs best with both server and client VMs.
-     */
-    private String outOfBoundsMsg(int index) {
-        return "Index: "+index+", Size: "+elementData.length;
-    }
+	/**
+	 * Constructs an IndexOutOfBoundsException detail message.
+	 * Of the many possible refactorings of the error handling code,
+	 * this "outlining" performs best with both server and client VMs.
+	 */
+	private String outOfBoundsMsg(int index) {
+		return "Index: "+index+", Size: "+elementData.length;
+	}
 
 	@Override
 	public short getShort(int index) {
@@ -57,11 +57,6 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 		short old = elementData[offset+index];
 		elementData[offset+index] = element;
 		return old;
-	}
-
-	@Override
-	public void addShort(int index, short element) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -92,16 +87,6 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends Short> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(int index, Collection<? extends Short> c) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -139,7 +124,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	@Override
 	public Object[] toArray() {
 		Object[] result = new Object[length];
-		for(int i=0;i<length;i++)
+		for(int i=offset;i<offset+length;i++)
 			result[i] = elementData[i+offset];
 		return result;
 	}
@@ -179,7 +164,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 	
 	@Override
-	public Short remove(int index) {
+	public short removeAt(int index) {
 		rangeCheck(index);
 		short old = elementData[offset+index];
 		elementData[offset+index] = ((short)0);
@@ -206,7 +191,7 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	
 	@Override
 	public boolean removeShort(short o) {
-		for(int i=0;i<length;i++) {
+		for(int i=offset;i<offset+length;i++) {
 			if(elementData[i] == o) {
 				elementData[i] = ((short)0);
 				return true;
@@ -216,12 +201,66 @@ public class DefaultShortArray extends AbstractShortList implements ShortArray {
 	}
 	
 	@Override
-	public ListIterator<Short> listIterator(int index) {
-		return new ArrayIterator<Short>(this, index);
+	public ShortListIterator listIterator(int index) {
+		return new ShortArrayIterator(this, index);
 	}
 
 	@Override
 	public Iterable<ShortPointer> primitiveIterable(int index) {
-		return new ShortPrimitiveIterable(this, index);
+		return new ShortPrimitiveIterable(index);
+	}
+	
+	@Override
+	public void reverse() {
+		for(int i = 0; i < length / 2; i++) {
+			short temp = elementData[offset+i];
+			elementData[i] = elementData[offset + length - i - 1];
+			elementData[offset + length - i - 1] = temp;
+		}
+	}
+	
+	@Override
+	public ShortBuffer asBuffer() {
+		return ShortBuffer.wrap(elementData, offset, length);
+	}
+	
+	private class ShortPrimitiveIterable implements Iterable<ShortPointer> {
+
+		private int initialPosition;
+
+		public ShortPrimitiveIterable(int initialPosition) {
+			this.initialPosition = initialPosition;
+		}
+
+		@Override
+		public Iterator<ShortPointer> iterator() {
+			return new ShortPointerIterator(initialPosition);
+		}
+	}
+	
+	private class ShortPointerIterator implements Iterator<ShortPointer> {
+
+		private int position;
+		private DefaultShortPointer pointer;
+		
+		public ShortPointerIterator(int position) {
+			this.position = position;
+			this.pointer = new DefaultShortPointer();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return position+1<length;
+		}
+
+		@Override
+		public ShortPointer next() {
+			position++;
+			if(position>=length)
+				throw new IndexOutOfBoundsException(outOfBoundsMsg(position));
+			pointer.set(getShort(position));
+			return pointer;
+		}
+		
 	}
 }

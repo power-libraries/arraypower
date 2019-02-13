@@ -2,11 +2,7 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.FloatCollection;
 import com.github.powerlibraries.primitive.collections.FloatList;
@@ -40,70 +36,66 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	}
 	
 	public static  FloatArray copy(float[] arr) {
-		...
-	}
-	
-	public static  FloatArray copy(Float[] arr) {
-		...
-	}
-	
-	public static  FloatArray copy(Float[] arr, int offset, int length) {
-		...
-	}
-	
-	public static  FloatArray wrap(float[] arr) {
-		...
-	}
-	
-	public static  FloatArray wrap(FloatArray arr) {
-		...
+		return new DefaultFloatArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  FloatArray copy(float[] arr, int offset, int length) {
-		...
+		return new DefaultFloatArray(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static  FloatArray copy(Float[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static  FloatArray copy(Float[] arr, int offset, int length) {
+		float[] copy = new float[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultFloatArray(copy);
+	}
+	
+	public static  FloatArray wrap(float... arr) {
+		return new DefaultFloatArray(arr);
+	}
+	
+	public static  FloatArray wrap(FloatArray arr) {
+		return new DefaultFloatArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  FloatArray wrap(float[] arr, int offset, int length) {
-		...
+		return new DefaultFloatArray(arr, offset, length);
 	}
-	
+
 	public static  FloatArray wrap(FloatArray arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultFloatArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  FloatArray concat(FloatArray arr, float element) {
-		...
-	}
-	
-	public static  FloatArray concat(FloatArray arr, float... elements) {
-		...
+		float[] result = new float[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  FloatArray concat(float element, FloatArray arr) {
-		...
-	}
-	
-	public static  FloatArray concat(float[] elements, FloatArray arr) {
-		...
+		float[] result = new float[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  FloatArray concat(FloatArray arr, Collection<? extends Float> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(Collection<? extends Float> elements, FloatArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  FloatArray concat(FloatArray arr, FloatArray arr2) {
-		...
-	}
-	
-	public static  FloatArray reverse(FloatArray arr) {
-		float[] a = new float[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getFloat(arr.size()-i-1);
-		return new DefaultFloatArray(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -116,7 +108,22 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	}
 	
 	@Override
+	public default void addFloat(int index, float element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllFloats(FloatCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Float> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Float> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -128,7 +135,6 @@ public interface FloatArray extends FloatList, Array<Float>, RandomAccess {
 	public default FloatArray subArray(int offset, int length) {
 		return FloatArray.wrap(this, offset, length);
 	}
-	
 	
 	public int binarySearch(float key);
 	

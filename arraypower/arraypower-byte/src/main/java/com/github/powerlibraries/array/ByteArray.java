@@ -2,11 +2,7 @@ package com.github.powerlibraries.array;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.RandomAccess;
-
-
 
 import com.github.powerlibraries.primitive.collections.ByteCollection;
 import com.github.powerlibraries.primitive.collections.ByteList;
@@ -40,70 +36,66 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	}
 	
 	public static  ByteArray copy(byte[] arr) {
-		...
-	}
-	
-	public static  ByteArray copy(Byte[] arr) {
-		...
-	}
-	
-	public static  ByteArray copy(Byte[] arr, int offset, int length) {
-		...
-	}
-	
-	public static  ByteArray wrap(byte[] arr) {
-		...
-	}
-	
-	public static  ByteArray wrap(ByteArray arr) {
-		...
+		return new DefaultByteArray(Arrays.copyOf(arr, arr.length));
 	}
 	
 	public static  ByteArray copy(byte[] arr, int offset, int length) {
-		...
+		return new DefaultByteArray(Arrays.copyOfRange(arr, offset, offset + length));
+	}
+	
+	public static  ByteArray copy(Byte[] arr) {
+		return copy(arr, 0, arr.length);
+	}
+	
+	public static  ByteArray copy(Byte[] arr, int offset, int length) {
+		byte[] copy = new byte[length];
+		for(int i=0; i < length; i++) {
+			copy[i] = arr[offset + i];
+		}
+		return new DefaultByteArray(copy);
+	}
+	
+	public static  ByteArray wrap(byte... arr) {
+		return new DefaultByteArray(arr);
+	}
+	
+	public static  ByteArray wrap(ByteArray arr) {
+		return new DefaultByteArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ByteArray wrap(byte[] arr, int offset, int length) {
-		...
+		return new DefaultByteArray(arr, offset, length);
 	}
-	
+
 	public static  ByteArray wrap(ByteArray arr, int offset, int lengt) {
-		...
+		//TODO all of those construcor should check for correct offset and length values
+		return new DefaultByteArray(arr.getInternalArray(), arr.getInternalOffset(), arr.size());
 	}
 	
 	public static  ByteArray concat(ByteArray arr, byte element) {
-		...
-	}
-	
-	public static  ByteArray concat(ByteArray arr, byte... elements) {
-		...
+		byte[] result = new byte[arr.size() + 1];
+		arr.copyTo(result);
+		result[arr.size() + 1] = element;
+		return wrap(result);
 	}
 	
 	public static  ByteArray concat(byte element, ByteArray arr) {
-		...
-	}
-	
-	public static  ByteArray concat(byte[] elements, ByteArray arr) {
-		...
+		byte[] result = new byte[arr.size() + 1];
+		arr.copyTo(result, 1);
+		result[0] = element;
+		return wrap(result);
 	}
 	
 	public static  ByteArray concat(ByteArray arr, Collection<? extends Byte> elements) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(Collection<? extends Byte> elements, ByteArray arr) {
-		...
+		// TODO Auto-generated method stub
 	}
 	
 	public static  ByteArray concat(ByteArray arr, ByteArray arr2) {
-		...
-	}
-	
-	public static  ByteArray reverse(ByteArray arr) {
-		byte[] a = new byte[arr.size()];
-		for(int i=0;i<arr.size();i++)
-			a[i] = arr.getByte(arr.size()-i-1);
-		return new DefaultByteArray(a);
+		// TODO Auto-generated method stub
 	}
 
 
@@ -116,7 +108,22 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	}
 	
 	@Override
+	public default void addByte(int index, byte element) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public default boolean addAllBytes(ByteCollection c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public default boolean addAll(Collection<? extends Byte> c) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public default boolean addAll(int index, Collection<? extends Byte> c) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -128,7 +135,6 @@ public interface ByteArray extends ByteList, Array<Byte>, RandomAccess {
 	public default ByteArray subArray(int offset, int length) {
 		return ByteArray.wrap(this, offset, length);
 	}
-	
 	
 	public int binarySearch(byte key);
 	
