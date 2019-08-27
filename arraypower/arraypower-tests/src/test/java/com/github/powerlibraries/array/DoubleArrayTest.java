@@ -1,0 +1,35 @@
+package com.github.powerlibraries.array;
+
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.Test;
+
+import com.github.powerlibraries.array.DoubleArray;
+
+public class DoubleArrayTest {
+
+	@Test
+	public void test() {
+		DoubleArray arr = DoubleArray.ofSize(17);
+		Random r = new Random(7);
+		List<Double> comparison = new ArrayList<>();
+		
+		for(int i=0; i<17; i++) {
+			Double value = ((double)r.nextInt(9));
+			arr.setDouble(i, value);
+			comparison.add(value);
+		}
+		
+		assertThat(arr)
+			.containsExactlyElementsOf(comparison)
+			.isEqualTo(comparison)
+			.hasSameSizeAs(comparison)
+			.doesNotContainNull();
+		
+	}
+}

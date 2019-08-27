@@ -11,7 +11,7 @@ public class ByteArrayIterator implements ByteListIterator {
 
 	public ByteArrayIterator(ByteArray array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override

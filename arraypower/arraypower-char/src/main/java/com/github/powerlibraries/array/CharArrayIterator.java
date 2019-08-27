@@ -11,7 +11,7 @@ public class CharArrayIterator implements CharListIterator {
 
 	public CharArrayIterator(CharArray array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ public class ObjectArrayIterator<E> implements ObjectListIterator<E> {
 
 	public ObjectArrayIterator(ObjectArray<E> array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override

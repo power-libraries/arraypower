@@ -11,7 +11,7 @@ public class {{t.label}}ArrayIterator{{t.generic}} implements {{t.label}}ListIte
 
 	public {{t.label}}ArrayIterator({{t.label}}Array{{t.generic}} array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override

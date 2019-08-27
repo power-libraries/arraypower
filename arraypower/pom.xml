@@ -23,16 +23,8 @@
 		<module>arraypower-primitives</module>
 		<module>arraypower-complete</module>
 		<module>arraypower-common</module>
+		<module>arraypower-tests</module>
 	</modules>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.4.0</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<plugins>

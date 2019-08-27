@@ -11,7 +11,7 @@ public class BooleanArrayIterator implements BooleanListIterator {
 
 	public BooleanArrayIterator(BooleanArray array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override

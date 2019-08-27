@@ -11,7 +11,7 @@ public class DoubleArrayIterator implements DoubleListIterator {
 
 	public DoubleArrayIterator(DoubleArray array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override

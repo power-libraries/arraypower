@@ -11,7 +11,7 @@ public class LongArrayIterator implements LongListIterator {
 
 	public LongArrayIterator(LongArray array, int position) {
 		this.array = array;
-		this.position = position;
+		this.position = position - 1;
 	}
 	
 	@Override
