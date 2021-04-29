@@ -1,0 +1,13 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/arraypower"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - manuel-hegner
+  ignore:
+  - dependency-name: org.junit.jupiter:junit-jupiter-engine
+    versions:
+    - 5.7.0
